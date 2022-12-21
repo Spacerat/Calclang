@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from typing import Any, Dict, Union, List
-import random
-from itertools import chain, groupby
+from typing import Dict, Union, List
+import numpy as np
+from itertools import groupby
 import networkx as nx
 
 
@@ -127,7 +127,7 @@ class Range:
         top = self.top.execute(ctx)
         if bottom > top:
             bottom, top = top, bottom
-        return random.random() * (top - bottom) + bottom
+        return np.random.rand(100000) * (top - bottom) + bottom
 
 
 Expression = BinOp | Value | Range | ID

@@ -20,17 +20,33 @@ def main(argv):
 
     program: Program = visitor.visit(tree)
 
-    results: List[ProgramResults] = []
+    result = program.execute().lastResult
 
-    for _ in range(0, 100000):
-        results.append(program.execute())
+    title = result.text
 
-    values = [result.lastResult.value for result in results]
-    import matplotlib.pyplot as plt
+    if isinstance(result.value, (int, float)):
+        print(f"{title}: {result.value}")
 
-    plt.hist(values, density=True, bins="auto")
-    plt.title(results[-1].statements[-1].text)
-    plt.show()
+    else:
+
+        import seaborn as sns
+        import matplotlib.pyplot as plt
+
+        plt.subplot(2, 1, 1)
+        plt.title(f"Cumulative distribution of {title}")
+        sns.histplot(result.value, kde=True, stat="percent", cumulative=True)
+        plt.grid()
+        plt.subplot(2, 1, 2)
+        plt.title(f"Distribution of {title}")
+        sns.histplot(result.value, kde=True, stat="percent")
+        plt.tight_layout()
+        plt.show()
+
+        # plt.hist(result.value, density=True, bins="auto")
+        # plt.title(title)
+        # plt.xlabel(f"value of {title}")
+        # plt.ylabel("Probability density")
+        # plt.show()
 
 
 if __name__ == "__main__":
