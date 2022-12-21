@@ -1,0 +1,16 @@
+'widgets sold' = 10000 to 20000
+
+'price of widget' = 2 to 5
+
+income = 'widgets sold' * 'price of widget'
+
+'employee count' = 3 to 5
+
+wages = 10000 to 15000
+
+rental = 20000 to 30000
+
+cost = rental - 'employee count' * wages
+
+profit = income - cost
+
