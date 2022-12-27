@@ -3,6 +3,8 @@ from typing import Dict, Union, List
 import numpy as np
 from itertools import groupby
 import networkx as nx
+from .ExecContext import ExecContext
+from .results import ProgramResults, AssignmentResult, StatementResult
 
 
 @dataclass
@@ -17,7 +19,7 @@ class ID:
     def get_deps(self) -> List[str]:
         return [self.name]
 
-    def execute(self, ctx: "ExecContext"):
+    def execute(self, ctx: ExecContext):
         return ctx.values[self.name]
 
 
@@ -30,7 +32,7 @@ class Assignment:
     def get_deps(self) -> List[str]:
         return self.expression.get_deps()
 
-    def execute(self, ctx: "ExecContext"):
+    def execute(self, ctx: ExecContext):
         return AssignmentResult(
             self.text, self.target.name, self.expression.execute(ctx)
         )
@@ -44,38 +46,8 @@ class Statement:
     def get_deps(self) -> List[str]:
         return self.expression.get_deps()
 
-    def execute(self, ctx: "ExecContext"):
+    def execute(self, ctx: ExecContext):
         return StatementResult(self.text, self.expression.execute(ctx))
-
-
-@dataclass
-class ExecContext:
-    values: Dict[str, int]
-    graph: nx.DiGraph
-
-    def add_assignment(self, target: str, deps: List[str]):
-        # invalidate the target and everything which depends on it
-
-        self.values[target] = None
-
-        if target in self.graph:
-            for nodes in nx.dfs_predecessors(self.graph.reverse(copy=False), target):
-                for node in nodes:
-                    self.values[node] = None
-
-            # replace this assignment's dependencies
-
-            for successor in self.graph.successors(target):
-                self.graph.remove_edge(target, successor)
-
-        self.graph.add_node(target)
-        for dep in deps:
-            self.graph.add_edge(target, dep)
-
-    def get_invalid_nodes_from_leaves(self):
-        for node in nx.topological_sort(self.graph.reverse(copy=False)):
-            if self.values[node] is None:
-                yield node
 
 
 @dataclass
@@ -134,31 +106,12 @@ Expression = BinOp | Value | Range | ID
 
 
 @dataclass
-class StatementResult:
-    text: str
-    value: Union[int, float]
-
-
-@dataclass
-class AssignmentResult:
-    text: str
-    target: str
-    value: Union[int, float]
-
-
-@dataclass
-class ProgramResults:
-    statements: List[StatementResult]
-    context: ExecContext
-    lastResult: Union[StatementResult, AssignmentResult]
-
-
-@dataclass
 class Program:
     statements: Union[Assignment, Statement]
 
     def execute(self):
-        """Perf notes:
+        """
+        Perf notes:
         - ideally, use numpy/etc to compute in bulk
         """
 
@@ -179,7 +132,5 @@ class Program:
                 for node in ctx.get_invalid_nodes_from_leaves():
                     ctx.values[node] = assignments[node].execute(ctx).value
 
-                for statement in v:
-                    results.append(statement.execute(ctx))
-
+                results.extend(statement.execute(ctx) for statement in v)
         return ProgramResults(list(filter(None, results)), ctx, results[-1])

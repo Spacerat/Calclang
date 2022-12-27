@@ -5,15 +5,16 @@ from parser.ExprParserVisitor import ExprParserVisitor
 from .calc_ast import Program, Statement, Assignment, Unknown, Range, BinOp, ID, Value
 
 
-class MyVisitor(ExprParserVisitor):
+class CalcAstVisitor(ExprParserVisitor):
     def aggregateResult(self, aggregate, nextResult):
         if aggregate is None:
             return [nextResult]
-        else:
-            aggregate.append(nextResult)
-            return aggregate
+
+        aggregate.append(nextResult)
+        return aggregate
 
     def visitProgram(self, ctx: ExprParser.ProgramContext):
+
         return Program(self.visitChildren(ctx))
 
     def extract_original_text(self, ctx):
@@ -59,8 +60,8 @@ class MyVisitor(ExprParserVisitor):
 
     def visitChildren(self, ctx):
         result = super().visitChildren(ctx)
-        if len(result) == 1 and result[0] is None:
+
+        if result is None or (len(result) == 1 and result[0] is None):
             return Unknown(ctx.getText())
-        if result is None or len(result) == 1 and result[0] is None:
-            return Unknown(ctx.getText())
+
         return result
