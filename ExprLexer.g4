@@ -17,6 +17,8 @@ PLUS: '+';
 MINUS: '-';
 TIMES: '*';
 DIVIDE: '/';
+GREATER_THAN: '>';
+LESS_THAN: '<';
 
 LINEAR: 'linear';
 GAUSSIAN: 'gaussian';

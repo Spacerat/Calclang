@@ -20,11 +20,12 @@ unit: WEEKS | DAYS | HOURS | MINUTES;
 numericLiteral: INT | FLOAT;
 
 expr:
-	id												# ident
-	| value = numericLiteral valueUnit = unit?		# value
-	| '(' expr ')'									# parens
-	| lhs = expr op = (TIMES | DIVIDE) rhs = expr	# binop
-	| bottom = expr TO top = expr rangeSpec?		# range
-	| lhs = expr op = (PLUS | MINUS) rhs = expr		# binop
-	| lhs = expr op = AND rhs = expr				# binop
-	| lhs = expr op = THEN rhs = expr				# binop;
+	id														# ident
+	| value = numericLiteral valueUnit = unit?				# value
+	| '(' expr ')'											# parens
+	| lhs = expr op = (GREATER_THAN | LESS_THAN) rhs = expr	# binop
+	| lhs = expr op = (TIMES | DIVIDE) rhs = expr			# binop
+	| bottom = expr TO top = expr rangeSpec?				# range
+	| lhs = expr op = (PLUS | MINUS) rhs = expr				# binop
+	| lhs = expr op = AND rhs = expr						# binop
+	| lhs = expr op = THEN rhs = expr						# binop;

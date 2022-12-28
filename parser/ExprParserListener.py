@@ -62,6 +62,15 @@ class ExprParserListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by ExprParser#inequality.
+    def enterInequality(self, ctx:ExprParser.InequalityContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#inequality.
+    def exitInequality(self, ctx:ExprParser.InequalityContext):
+        pass
+
+
     # Enter a parse tree produced by ExprParser#rangeSpec.
     def enterRangeSpec(self, ctx:ExprParser.RangeSpecContext):
         pass

@@ -39,6 +39,11 @@ class ExprParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by ExprParser#inequality.
+    def visitInequality(self, ctx:ExprParser.InequalityContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by ExprParser#rangeSpec.
     def visitRangeSpec(self, ctx:ExprParser.RangeSpecContext):
         return self.visitChildren(ctx)
