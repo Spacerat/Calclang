@@ -2,22 +2,30 @@
 
 ## Language features
 
-- [ ] Units
-- [ ] Time unit conversion
 - [ ] Events with chance
-- [ ] Triangle, normal
+- [ ] Distributions: triangle, normal
 - [ ] Task graphs
+- [ ] Basic unit handling
+- [ ] Time unit conversion (minutes, seconds)
+- [ ] Unit algebra (dollars/time)
+
+## Analysis outputs
+
+- [ ] Percentile table (10%, 50%, 90%)
+- [ ] Cleaner numeric precisiion (2-3 significant digits max)
+- [ ] Units in output
 
 ## Error handling
 
-- [ ] Default variable values
+- [x] Default variable values
 - [ ] Only show errors for executed dag components
 
-## Other ideas
+## Other potential ideas
 
 - [ ] Min, max
 - [ ] Other functions
 - [ ] Function definitions
+- [ ] Dates?
 
 ## Bugs
 
