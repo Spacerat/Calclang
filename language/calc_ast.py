@@ -278,8 +278,6 @@ class Program:
         if not results and new_assignments:
             ctx.recompute()
             top = ctx.get_highest_node(new_assignments)
-            print(new_assignments)
-            print(top)
             results = [ctx.assignments[top].execute(ctx)]
 
         return ProgramResults(list(filter(None, results)), ctx)
