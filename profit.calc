@@ -8,7 +8,7 @@ income = 'widgets sold' * 'price of widget'
 
 cost = rental + 'employee count' * wages
 
-rental = 20000 to 30000
+rental = 10000 to 40000
 
 wages = 10000 to 15000
 

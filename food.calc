@@ -1,0 +1,11 @@
+'chop potatoes' = 10 to 20 minutes
+
+'put potatoes in water' = 1 minute
+
+'boil potatoes' = 10 to 15 minutes
+
+'make potatoes' = 'chop potatoes' + 'put potatoes in water' + 'boil potatoes'
+
+'make batches of potatoes' = 'make potatoes' * (3 to 4)
+
+'make batches of potatoes'
