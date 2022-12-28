@@ -1,3 +1,5 @@
+# type: ignore
+
 from parser.ExprParser import ExprParser
 from parser.ExprParserVisitor import ExprParserVisitor
 

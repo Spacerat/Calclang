@@ -1,0 +1,2 @@
+class ProgramNameError(NameError):
+    pass
