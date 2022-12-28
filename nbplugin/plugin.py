@@ -1,5 +1,5 @@
 from language import run, ExecContext
-
+import locale
 from IPython.core.magic import Magics, magics_class, line_cell_magic
 from IPython import get_ipython, InteractiveShell
 
@@ -26,6 +26,7 @@ class CalcMagics(Magics):
 
 
 def register():
+    locale.setlocale(locale.LC_ALL, "")
     ip: InteractiveShell = get_ipython()  # type: ignore
     if ip:
         ip.register_magics(CalcMagics)
