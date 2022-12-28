@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 from typing import Dict, Union, List, Optional, Iterator, Literal
 import numpy as np
 import networkx as nx
-from .errors import ProgramNameError
 
 
 Numeric = int | float | np.ndarray
@@ -22,6 +21,12 @@ class ExecContext:
         )
 
     def add_assignment(self, target: str, assignment: "Assignment"):
+        # Do nothing if the assignment is unchanged
+
+        curr_assignment = self.assignments.get(target)
+        if curr_assignment and curr_assignment.text == assignment.text:
+            return
+
         # invalidate the target and everything which depends on it
 
         deps = assignment.get_deps()
@@ -32,8 +37,11 @@ class ExecContext:
                 self.values[node] = None
 
             # replace this assignment's dependencies
+
             for successor in list(self.graph.successors(target)):
                 self.graph.remove_edge(target, successor)
+
+        # Add the new assignment and all of its dependencies
 
         self.graph.add_node(target)
         for dep in deps:
@@ -49,20 +57,20 @@ class ExecContext:
         try:
             return self.values[name]
         except KeyError:
-            raise ProgramNameError(name)
+            # print(f"{name} is not defined")
+            print(f"{name} is not defined")
+            return None
 
     def get_invalid_nodes_from_leaves(self) -> Iterator[str]:
         for node in nx.topological_sort(self.graph.reverse(copy=False)):
-            try:
-                if self.get_value(node) is None:
-                    yield node
-            except KeyError:
-                raise ProgramNameError(node)
+            if node in self.values and self.values[node] is None:
+                yield node
 
     def recompute(self):
         if self.has_assigned:
             for node in self.get_invalid_nodes_from_leaves():
-                self.values[node] = self.assignments[node].execute(self).value
+                if node in self.assignments:
+                    self.values[node] = self.assignments[node].execute(self).value
 
     def get_highest_node(self, from_nodes):
         subgraph = subgraph_dag_from_nodes(self.graph, from_nodes)
@@ -199,9 +207,17 @@ class BinOp:
     def get_deps(self) -> List[str]:
         return self.lhs.get_deps() + self.rhs.get_deps()
 
+    def default_val(self, val):
+        if val is not None:
+            return val
+        if self.op in ("+", "-"):
+            return 0
+        if self.op in ("*", "/"):
+            return 1
+
     def execute(self, ctx: "ExecContext"):
-        lhs = self.lhs.execute(ctx)
-        rhs = self.rhs.execute(ctx)
+        lhs = self.default_val(self.lhs.execute(ctx))
+        rhs = self.default_val(self.rhs.execute(ctx))
 
         if self.op == "+":
             return lhs + rhs

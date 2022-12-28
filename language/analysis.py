@@ -1,6 +1,5 @@
 from .calc_ast import (
     ProgramResults,
-    AnyResult,
     AssignmentResult,
     StatementResult,
     InequalityResult,
@@ -65,9 +64,9 @@ def display_inequality_result(result: InequalityResult):
 
         format_plots(ax1, ax2, name)
 
-        ipdisplay(Markdown(f"**Probability of '{human_text}'**: {proba:.2%}"))
-        ipdisplay(Markdown(f"**Mean {name}**: {np.mean(lhs):n}"))
-        ipdisplay(Markdown(f"**Median {name}**: {np.median(lhs):n}"))
+        printmd(f"**Probability of '{human_text}'**: {proba:.2%}")
+        printmd(f"**Mean {name}**: {np.mean(lhs):n}")
+        printmd(f"**Median {name}**: {np.median(lhs):n}")
 
         fig.tight_layout()
         plt.show()
@@ -104,8 +103,8 @@ def display_basic_result(result: StatementResult | AssignmentResult):
 
         fig.tight_layout()
 
-        ipdisplay(Markdown(f"**Mean {result.name()}**: {np.mean(result.value):n}"))
-        ipdisplay(Markdown(f"**Median {result.name()}**: {np.median(result.value):n}"))
+        printmd(f"**Mean {result.name()}**: {np.mean(result.value):n}")
+        printmd(f"**Median {result.name()}**: {np.median(result.value):n}")
 
         plt.show()
 
@@ -158,3 +157,7 @@ def split_hist(data, *, ax, threshold, greater, cumulative, name):
         )
 
     ax.legend()
+
+
+def printmd(md: str):
+    ipdisplay(Markdown(md))

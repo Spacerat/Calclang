@@ -22,3 +22,7 @@
 ## Bugs
 
 - [x] Notebook plugin outputs old values
+
+## Technical thoughts
+
+- 'analysis' results (what should we show?) should be decoupled from the display of analyses (how should we show it?)
