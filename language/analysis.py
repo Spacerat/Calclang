@@ -58,7 +58,7 @@ def display_inequality_result(result: InequalityResult):
 
         proba = np.mean(lhs > rhs if greater else lhs < rhs)
 
-        fig.suptitle(f"P ( {result.text} ) {op} {result.rhs} = {proba:.0%}")
+        fig.suptitle(f"P ( {result.text} ) = {proba:.0%}")
 
         human_text = result.text.replace("<", "under").replace(">", "over")
 
