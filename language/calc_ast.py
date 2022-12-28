@@ -1,17 +1,78 @@
 from dataclasses import dataclass, field
-from typing import Dict, Union, List, Optional, Iterator
+from typing import Dict, Union, List, Optional, Iterator, Literal
 import numpy as np
 import networkx as nx
 from .errors import ProgramNameError
 
 
-Literal = int | float | np.ndarray
+Numeric = int | float | np.ndarray
+
+
+@dataclass
+class ExecContext:
+    values: Dict[str, Optional[Numeric]] = field(default_factory=dict)
+    graph: nx.DiGraph = field(default_factory=nx.DiGraph)
+    assignments: Dict[str, "Assignment"] = field(default_factory=dict)
+
+    def copy(self):
+        return ExecContext(
+            values=self.values.copy(),
+            graph=self.graph.copy(),
+            assignments=self.assignments.copy(),
+        )
+
+    def add_assignment(self, target: str, assignment: "Assignment"):
+        # invalidate the target and everything which depends on it
+
+        deps = assignment.get_deps()
+        self.values[target] = None
+
+        if target in self.graph:
+            for node in nx.ancestors(self.graph, target):
+                self.values[node] = None
+
+            # replace this assignment's dependencies
+            for successor in list(self.graph.successors(target)):
+                self.graph.remove_edge(target, successor)
+
+        self.graph.add_node(target)
+        for dep in deps:
+            self.graph.add_edge(target, dep)
+
+        self.assignments[target] = assignment
+
+    @property
+    def has_assigned(self) -> bool:
+        return any(v is None for v in self.values.values())
+
+    def get_value(self, name: str):
+        try:
+            return self.values[name]
+        except KeyError:
+            raise ProgramNameError(name)
+
+    def get_invalid_nodes_from_leaves(self) -> Iterator[str]:
+        for node in nx.topological_sort(self.graph.reverse(copy=False)):
+            try:
+                if self.get_value(node) is None:
+                    yield node
+            except KeyError:
+                raise ProgramNameError(node)
+
+    def recompute(self):
+        if self.has_assigned:
+            for node in self.get_invalid_nodes_from_leaves():
+                self.values[node] = self.assignments[node].execute(self).value
+
+    def get_highest_node(self, from_nodes):
+        subgraph = subgraph_dag_from_nodes(self.graph, from_nodes)
+        return next(nx.topological_sort(subgraph))
 
 
 @dataclass
 class StatementResult:
     text: str
-    value: Optional[Literal]
+    value: Optional[Numeric]
 
     def name(self):
         return self.text
@@ -21,18 +82,33 @@ class StatementResult:
 class AssignmentResult:
     text: str
     target: str
-    value: Optional[Literal]
+    value: Optional[Numeric]
 
     def name(self):
         return self.target
 
 
-AnyResult = StatementResult | AssignmentResult
+@dataclass
+class InequalityResult:
+    text: str
+    lhs: Optional[Numeric]
+    rhs: Optional[Numeric]
+    op: Literal[">"] | Literal["<"]
+
+    def name(self):
+        # HACK
+        # should get text from children directly instead
+        return (self.text.split("<") if self.op == "<" else self.text.split(">"))[
+            0
+        ].strip()
+
+
+AnyResult = StatementResult | AssignmentResult | InequalityResult
 
 
 @dataclass
 class ProgramResults:
-    results: List[StatementResult | AssignmentResult]
+    results: List[AnyResult]
     context: "ExecContext"
 
     @property
@@ -68,6 +144,25 @@ class Assignment:
     def execute(self, ctx: "ExecContext"):
         return AssignmentResult(
             self.text, self.target.name, self.expression.execute(ctx)
+        )
+
+
+@dataclass
+class Inequality:
+    text: str
+    lhs: "Expression"
+    op: str
+    rhs: "Expression"
+
+    def get_deps(self) -> List[str]:
+        return self.lhs.get_deps() + self.rhs.get_deps()
+
+    def execute(self, ctx: "ExecContext"):
+        if self.op not in ("<", ">"):
+            raise Exception("Invalid inequality operator")
+
+        return InequalityResult(
+            self.text, self.lhs.execute(ctx), self.rhs.execute(ctx), self.op
         )
 
 
@@ -160,82 +255,18 @@ class Program:
             if isinstance(statement, Assignment):
                 ctx.add_assignment(statement.target.name, statement)
                 new_assignments.add(statement.target.name)
-            if isinstance(statement, Statement):
+            if isinstance(statement, (Statement, Inequality)):
                 ctx.recompute()
                 results.append(statement.execute(ctx))
 
         if not results and new_assignments:
-            top = ctx.get_highest_node(new_assignments)
             ctx.recompute()
+            top = ctx.get_highest_node(new_assignments)
+            print(new_assignments)
+            print(top)
             results = [ctx.assignments[top].execute(ctx)]
 
         return ProgramResults(list(filter(None, results)), ctx)
-
-
-from dataclasses import dataclass
-from typing import Dict, List
-import networkx as nx
-
-
-@dataclass
-class ExecContext:
-    values: Dict[str, Optional[Literal]] = field(default_factory=dict)
-    graph: nx.DiGraph = field(default_factory=nx.DiGraph)
-    assignments: Dict[str, Assignment] = field(default_factory=dict)
-
-    def copy(self):
-        return ExecContext(
-            values=self.values.copy(),
-            graph=self.graph.copy(),
-            assignments=self.assignments.copy(),
-        )
-
-    def add_assignment(self, target: str, assignment: Assignment):
-        # invalidate the target and everything which depends on it
-
-        deps = assignment.get_deps()
-        self.values[target] = None
-
-        if target in self.graph:
-            for node in nx.ancestors(self.graph, target):
-                self.values[node] = None
-
-            # replace this assignment's dependencies
-            for successor in list(self.graph.successors(target)):
-                self.graph.remove_edge(target, successor)
-
-        self.graph.add_node(target)
-        for dep in deps:
-            self.graph.add_edge(target, dep)
-
-        self.assignments[target] = assignment
-
-    @property
-    def has_assigned(self) -> bool:
-        return any(v is None for v in self.values.values())
-
-    def get_value(self, name: str):
-        try:
-            return self.values[name]
-        except KeyError:
-            raise ProgramNameError(name)
-
-    def get_invalid_nodes_from_leaves(self) -> Iterator[str]:
-        for node in nx.topological_sort(self.graph.reverse(copy=False)):
-            try:
-                if self.get_value(node) is None:
-                    yield node
-            except KeyError:
-                raise ProgramNameError(node)
-
-    def recompute(self):
-        if self.has_assigned:
-            for node in self.get_invalid_nodes_from_leaves():
-                self.values[node] = self.assignments[node].execute(self).value
-
-    def get_highest_node(self, from_nodes):
-        subgraph_dag_from_nodes(self.graph, from_nodes)
-        return next(nx.topological_sort(self.graph))
 
 
 def subgraph_dag_from_nodes(g, nodes):

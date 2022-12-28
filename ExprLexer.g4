@@ -28,7 +28,7 @@ WEEKS: 'week' 's'?;
 HOURS: 'hour' 's'?;
 MINUTES: 'minute' 's'?;
 
-INT: ([1-9][0-9]* | '0');
+INT: (MINUS? [1-9][0-9]* | '0');
 FLOAT: INT [.] INT;
 ID: [a-zA-Z_][a-zA-Z_0-9]*;
 BRACKET_ID: '\'' (~['])* '\'';

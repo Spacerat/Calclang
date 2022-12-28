@@ -4,7 +4,17 @@ from parser.ExprParser import ExprParser
 from parser.ExprParserVisitor import ExprParserVisitor
 
 
-from .calc_ast import Program, Statement, Assignment, Unknown, Range, BinOp, ID, Value
+from .calc_ast import (
+    Program,
+    Statement,
+    Assignment,
+    Unknown,
+    Range,
+    BinOp,
+    ID,
+    Value,
+    Inequality,
+)
 
 
 class CalcAstVisitor(ExprParserVisitor):
@@ -33,6 +43,14 @@ class CalcAstVisitor(ExprParserVisitor):
             self.extract_original_text(ctx),
             self.visit(ctx.target),
             self.visit(ctx.expression),
+        )
+
+    def visitInequality(self, ctx: ExprParser.InequalityContext):
+        return Inequality(
+            self.extract_original_text(ctx),
+            self.visit(ctx.lhs),
+            ctx.op.text,
+            self.visit(ctx.rhs),
         )
 
     def visitValue(self, ctx: ExprParser.ValueContext):

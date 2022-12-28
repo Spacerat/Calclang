@@ -19,7 +19,7 @@ class CalcMagics(Magics):
         self.context = new_context
 
     @line_cell_magic
-    def whatif(self, line, cell=None):
+    def what_if(self, line, cell=None):
         str = self.get_str(line, cell)
 
         run(str, self.context)
