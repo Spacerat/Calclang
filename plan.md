@@ -6,9 +6,11 @@
 - [ ] Events with chance
 - [ ] Distributions: triangle, normal
 - [ ] Task graphs
-- [ ] Basic unit handling
+- [ ] Basic unit handling (no unit mixing)
 - [ ] Time unit conversion (minutes, seconds)
 - [ ] Unit algebra (dollars/time)
+- [ ] Currency
+  - [ ] (currency conversion?!?)
 
 ## Analysis outputs
 

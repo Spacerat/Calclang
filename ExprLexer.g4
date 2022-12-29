@@ -22,8 +22,8 @@ LESS_THAN: '<';
 LSQPAREN: '[';
 RSQPAREN: ']';
 
-LINEAR: 'linear';
-GAUSSIAN: 'gaussian';
+DOLLAR: '$';
+POUND: '£';
 
 DAYS: 'day' 's'?;
 WEEKS: 'week' 's'?;

@@ -53,42 +53,6 @@ class ExprParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by ExprParser#sequenceId.
-    def enterSequenceId(self, ctx:ExprParser.SequenceIdContext):
-        pass
-
-    # Exit a parse tree produced by ExprParser#sequenceId.
-    def exitSequenceId(self, ctx:ExprParser.SequenceIdContext):
-        pass
-
-
-    # Enter a parse tree produced by ExprParser#sequenceIndexAtId.
-    def enterSequenceIndexAtId(self, ctx:ExprParser.SequenceIndexAtIdContext):
-        pass
-
-    # Exit a parse tree produced by ExprParser#sequenceIndexAtId.
-    def exitSequenceIndexAtId(self, ctx:ExprParser.SequenceIndexAtIdContext):
-        pass
-
-
-    # Enter a parse tree produced by ExprParser#sequenceIndexAbsolute.
-    def enterSequenceIndexAbsolute(self, ctx:ExprParser.SequenceIndexAbsoluteContext):
-        pass
-
-    # Exit a parse tree produced by ExprParser#sequenceIndexAbsolute.
-    def exitSequenceIndexAbsolute(self, ctx:ExprParser.SequenceIndexAbsoluteContext):
-        pass
-
-
-    # Enter a parse tree produced by ExprParser#sequenceIndexRelative.
-    def enterSequenceIndexRelative(self, ctx:ExprParser.SequenceIndexRelativeContext):
-        pass
-
-    # Exit a parse tree produced by ExprParser#sequenceIndexRelative.
-    def exitSequenceIndexRelative(self, ctx:ExprParser.SequenceIndexRelativeContext):
-        pass
-
-
     # Enter a parse tree produced by ExprParser#assignment.
     def enterAssignment(self, ctx:ExprParser.AssignmentContext):
         pass
@@ -152,6 +116,15 @@ class ExprParserListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by ExprParser#currency.
+    def enterCurrency(self, ctx:ExprParser.CurrencyContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#currency.
+    def exitCurrency(self, ctx:ExprParser.CurrencyContext):
+        pass
+
+
     # Enter a parse tree produced by ExprParser#parens.
     def enterParens(self, ctx:ExprParser.ParensContext):
         pass
@@ -194,6 +167,42 @@ class ExprParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by ExprParser#binop.
     def exitBinop(self, ctx:ExprParser.BinopContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#sequenceId.
+    def enterSequenceId(self, ctx:ExprParser.SequenceIdContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#sequenceId.
+    def exitSequenceId(self, ctx:ExprParser.SequenceIdContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#sequenceIndexAtId.
+    def enterSequenceIndexAtId(self, ctx:ExprParser.SequenceIndexAtIdContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#sequenceIndexAtId.
+    def exitSequenceIndexAtId(self, ctx:ExprParser.SequenceIndexAtIdContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#sequenceIndexAbsolute.
+    def enterSequenceIndexAbsolute(self, ctx:ExprParser.SequenceIndexAbsoluteContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#sequenceIndexAbsolute.
+    def exitSequenceIndexAbsolute(self, ctx:ExprParser.SequenceIndexAbsoluteContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#sequenceIndexRelative.
+    def enterSequenceIndexRelative(self, ctx:ExprParser.SequenceIndexRelativeContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#sequenceIndexRelative.
+    def exitSequenceIndexRelative(self, ctx:ExprParser.SequenceIndexRelativeContext):
         pass
 
 

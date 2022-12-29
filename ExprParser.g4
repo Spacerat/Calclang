@@ -17,7 +17,7 @@ stat:
 	| expression = expr terminate?							# statement
 	| lhs = expr op = (GREATER_THAN | LESS_THAN) rhs = expr	# inequality;
 
-rangeSpec: '(' (LINEAR | GAUSSIAN) ')';
+rangeSpec: '(' kind = ID ')';
 
 unit: WEEKS | DAYS | HOURS | MINUTES;
 
@@ -25,6 +25,7 @@ numericLiteral: INT | FLOAT;
 
 expr:
 	id												# ident
+	| symbol = (DOLLAR | POUND) amount = FLOAT		# currencyValue
 	| value = numericLiteral valueUnit = unit?		# value
 	| '(' expr ')'									# parens
 	| lhs = expr op = (TIMES | DIVIDE) rhs = expr	# binop

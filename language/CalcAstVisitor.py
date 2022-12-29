@@ -79,6 +79,10 @@ class CalcAstVisitor(ExprParserVisitor):
             self.visit(ctx.rhs),
         )
 
+    def visitCurrency(self, ctx: ExprParser.CurrencyContext):
+        unit = ctx.symbol.text
+        return Value(self.visit(ctx.value), unit)
+
     def visitValue(self, ctx: ExprParser.ValueContext):
         unit = self.visit(ctx.valueUnit) if ctx.valueUnit else None
         return Value(self.visit(ctx.value), unit)
