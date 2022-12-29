@@ -12,6 +12,9 @@ class ExecContext:
     values: Dict[str, Optional[Numeric]] = field(default_factory=dict)
     graph: nx.DiGraph = field(default_factory=nx.DiGraph)
     assignments: Dict[str, "Assignment"] = field(default_factory=dict)
+    # sequenceAssignments: Dic
+
+    indexValues: List[int] = field(default_factory=list)
 
     def copy(self):
         return ExecContext(
@@ -20,6 +23,15 @@ class ExecContext:
             assignments=self.assignments.copy(),
         )
 
+    def withIndexValues(self, values: List[int]):
+        return ExecContext(
+            values=self.values,
+            graph=self.graph,
+            assignments=self.assignments,
+            indexValues=values,
+        )
+
+    # TODO: make immutable?
     def add_assignment(self, target: str, assignment: "Assignment"):
         # Do nothing if the assignment is unchanged
 
@@ -29,7 +41,7 @@ class ExecContext:
 
         # invalidate the target and everything which depends on it
 
-        deps = assignment.get_deps()
+        deps = assignment.get_deps(self)
         self.values[target] = None
 
         if target in self.graph:
@@ -130,10 +142,10 @@ class Unknown:
 
 
 @dataclass
-class ID:
+class Id:
     name: str
 
-    def get_deps(self) -> List[str]:
+    def get_deps(self, ctx: ExecContext) -> List[str]:
         return [self.name]
 
     def execute(self, ctx: "ExecContext"):
@@ -141,13 +153,54 @@ class ID:
 
 
 @dataclass
+class SequenceIndexId:
+    name: str
+
+
+@dataclass
+class SequenceIndexRelative:
+    name: str
+    op: Literal["-", "+"]
+    offset: int
+
+
+@dataclass
+class SequenceIndexAbsolute:
+    index: int
+
+
+SequenceIndex = SequenceIndexId | SequenceIndexRelative | SequenceIndexRelative
+
+
+@dataclass
+class SequenceId:
+    name: str
+    indexes: List[SequenceIndex]
+
+
+@dataclass
 class Assignment:
     text: str
-    target: ID
+    target: Id
     expression: "Expression"
 
-    def get_deps(self) -> List[str]:
-        return self.expression.get_deps()
+    def get_deps(self, ctx: ExecContext) -> List[str]:
+        return self.expression.get_deps(ctx)
+
+    def execute(self, ctx: "ExecContext"):
+        return AssignmentResult(
+            self.text, self.target.name, self.expression.execute(ctx)
+        )
+
+
+@dataclass
+class SequenceAssignment:
+    text: str
+    target: SequenceId
+    expression: "Expression"
+
+    def get_deps(self, ctx: ExecContext) -> List[str]:
+        return self.expression.get_deps(ctx)
 
     def execute(self, ctx: "ExecContext"):
         return AssignmentResult(
@@ -162,8 +215,8 @@ class Inequality:
     op: str
     rhs: "Expression"
 
-    def get_deps(self) -> List[str]:
-        return self.lhs.get_deps() + self.rhs.get_deps()
+    def get_deps(self, ctx: ExecContext) -> List[str]:
+        return self.lhs.get_deps(ctx) + self.rhs.get_deps(ctx)
 
     def execute(self, ctx: "ExecContext"):
         if self.op not in ("<", ">"):
@@ -179,8 +232,8 @@ class Statement:
     text: str
     expression: "Expression"
 
-    def get_deps(self) -> List[str]:
-        return self.expression.get_deps()
+    def get_deps(self, ctx: ExecContext) -> List[str]:
+        return self.expression.get_deps(ctx)
 
     def execute(self, ctx: "ExecContext"):
         return StatementResult(self.text, self.expression.execute(ctx))
@@ -191,7 +244,7 @@ class Value:
     literal: int | float
     unit: str
 
-    def get_deps(self) -> List[str]:
+    def get_deps(self, ctx: ExecContext) -> List[str]:
         return []
 
     def execute(self, ctx: "ExecContext"):
@@ -204,8 +257,8 @@ class BinOp:
     op: str
     rhs: "Expression"
 
-    def get_deps(self) -> List[str]:
-        return self.lhs.get_deps() + self.rhs.get_deps()
+    def get_deps(self, ctx: ExecContext) -> List[str]:
+        return self.lhs.get_deps(ctx) + self.rhs.get_deps(ctx)
 
     def default_val(self, val):
         if val is not None:
@@ -235,8 +288,8 @@ class Range:
     bottom: "Expression"
     top: "Expression"
 
-    def get_deps(self) -> List[str]:
-        return self.bottom.get_deps() + self.top.get_deps()
+    def get_deps(self, ctx: ExecContext) -> List[str]:
+        return self.bottom.get_deps(ctx) + self.top.get_deps(ctx)
 
     def execute(self, ctx: "ExecContext") -> np.ndarray:
         bottom = self.bottom.execute(ctx)
@@ -246,7 +299,7 @@ class Range:
         return np.random.rand(100000) * (top - bottom) + bottom
 
 
-Expression = BinOp | Value | Range | ID
+Expression = BinOp | Value | Range | Id
 
 
 @dataclass

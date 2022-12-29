@@ -2,6 +2,7 @@
 
 ## Language features
 
+- [ ] Sequential logic
 - [ ] Events with chance
 - [ ] Distributions: triangle, normal
 - [ ] Task graphs

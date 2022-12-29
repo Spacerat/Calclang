@@ -19,6 +19,8 @@ TIMES: '*';
 DIVIDE: '/';
 GREATER_THAN: '>';
 LESS_THAN: '<';
+LSQPAREN: '[';
+RSQPAREN: ']';
 
 LINEAR: 'linear';
 GAUSSIAN: 'gaussian';

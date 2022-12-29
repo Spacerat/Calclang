@@ -8,10 +8,15 @@ from .calc_ast import (
     Program,
     Statement,
     Assignment,
+    SequenceAssignment,
+    SequenceIndexAbsolute,
+    SequenceIndexRelative,
+    SequenceIndexId,
+    SequenceId,
     Unknown,
     Range,
     BinOp,
-    ID,
+    Id,
     Value,
     Inequality,
 )
@@ -45,6 +50,27 @@ class CalcAstVisitor(ExprParserVisitor):
             self.visit(ctx.expression),
         )
 
+    def visitSequenceAssignment(self, ctx: ExprParser.SequenceAssignmentContext):
+        return SequenceAssignment(
+            self.extract_original_text(ctx),
+            self.visit(ctx.target),
+            self.visit(ctx.expression),
+        )
+
+    def visitSequenceId(self, ctx: ExprParser.SequenceIdContext):
+        return SequenceId(self.visit(ctx.name), [self.visit(x) for x in ctx.args])
+
+    def visitSequenceIndexAbsolute(self, ctx: ExprParser.SequenceIndexAbsoluteContext):
+        return SequenceIndexAbsolute(int(ctx.seqIdx.text))
+
+    def visitSequenceIndexAtId(self, ctx: ExprParser.SequenceIndexAtIdContext):
+        return SequenceIndexId(ctx.seqId.text)
+
+    def visitSequenceIndexRelative(self, ctx: ExprParser.SequenceIndexRelativeContext):
+        return SequenceIndexRelative(
+            name=ctx.seqId.text, op=ctx.op.text, offset=int(ctx.seqOffset.text)
+        )
+
     def visitInequality(self, ctx: ExprParser.InequalityContext):
         return Inequality(
             self.extract_original_text(ctx),
@@ -67,10 +93,10 @@ class CalcAstVisitor(ExprParserVisitor):
         return self.visitChildren(ctx)[0]
 
     def visitRawId(self, ctx: ExprParser.RawIdContext):
-        return ID(ctx.getText())
+        return Id(ctx.getText())
 
     def visitBracketId(self, ctx: ExprParser.BracketIdContext):
-        return ID(ctx.getText()[1:-1])
+        return Id(ctx.getText()[1:-1])
 
     def visitRange(self, ctx: ExprParser.RangeContext):
         return Range(self.visit(ctx.bottom), self.visit(ctx.top))
