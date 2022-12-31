@@ -7,7 +7,7 @@ from .calc_ast import (
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-
+import babel.numbers
 
 from IPython.display import display as ipdisplay, Markdown
 
@@ -22,8 +22,6 @@ def display(results: ProgramResults):
 
     elif isinstance(result, InequalityResult):
         display_inequality_result(result)
-    else:
-        print("nope")
 
 
 def display_inequality_result(result: InequalityResult):
@@ -67,20 +65,23 @@ def display_inequality_result(result: InequalityResult):
         format_plots(ax1, ax2, name, lhs.u)
 
         printmd(f"**Probability of '{human_text}'**: {proba:.2%}")
-        printmd(f"**Mean {name}**: {np.mean(lhs):n}")
-        printmd(f"**Median {name}**: {np.median(lhs):n}")
+        printmd(f"**Mean {name}**: {fmt_value(np.mean(lhs))}")
+        printmd(f"**Median {name}**: {fmt_value(np.median(lhs))}")
 
         fig.tight_layout()
         plt.show()
 
 
-def format_plots(ax1, ax2, name, unit):
+def format_plots(ax1, ax2, name, unit=None):
     ax1.grid()
     ax1.set_ylabel("Cumulative probability")
 
     ax2.set_ylabel("Probability density")
     ax2.set_yticklabels([])
-    ax2.set_xlabel(f"{name} ({unit})")
+    if unit and str(unit) != "dimensionless":
+        ax2.set_xlabel(f"{name} ({unit})")
+    else:
+        ax2.set_xlabel(name)
 
 
 def display_basic_result(result: StatementResult | AssignmentResult):
@@ -103,12 +104,22 @@ def display_basic_result(result: StatementResult | AssignmentResult):
 
         fig.tight_layout()
 
-        printmd(f"**Mean {result.name()}**: {np.mean(value):n}")
-        printmd(f"**Median {result.name()}**: {np.median(value):n}")
+        printmd(f"**Mean {result.name()}**: {fmt_value(np.mean(value))}")
+        printmd(f"**Median {result.name()}**: {fmt_value(np.median(value))}")
 
         plt.show()
     else:
         print(f"Unknown type {value.m.__class__}")
+
+
+def fmt_value(value):
+    if value.dimensionless:
+        return f"{value.m:n}"
+
+    if value.u in ("USD", "GBP"):
+        return babel.numbers.format_currency(value.m, str(value.u), locale="EN_US")
+
+    return f"{value:n}"
 
 
 def split_hist(data, *, ax, threshold, greater, cumulative, name):
