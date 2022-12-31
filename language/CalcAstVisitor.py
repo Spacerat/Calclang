@@ -14,6 +14,7 @@ from .calc_ast import (
     SequenceIndexId,
     SequenceId,
     Unknown,
+    Versus,
     Range,
     BinOp,
     Id,
@@ -36,7 +37,6 @@ class CalcAstVisitor(ExprParserVisitor):
         return aggregate
 
     def visitProgram(self, ctx: ExprParser.ProgramContext):
-
         return Program(self.visitChildren(ctx))
 
     def extract_original_text(self, ctx):
@@ -84,6 +84,13 @@ class CalcAstVisitor(ExprParserVisitor):
             self.visit(ctx.rhs),
         )
 
+    def visitVersus(self, ctx: ExprParser.VersusContext):
+        return Versus(
+            self.extract_original_text(ctx),
+            self.visit(ctx.lhs),
+            self.visit(ctx.rhs),
+        )
+
     def visitCurrencyValue(self, ctx: ExprParser.CurrencyValueContext):
         unit = currency_units[ctx.symbol.text]
 
@@ -109,7 +116,12 @@ class CalcAstVisitor(ExprParserVisitor):
         return Id(ctx.getText()[1:-1])
 
     def visitRange(self, ctx: ExprParser.RangeContext):
-        return Range(self.visit(ctx.bottom), self.visit(ctx.top))
+
+        return Range(
+            bottom=self.visit(ctx.bottom),
+            mid=self.visit(ctx.mid) if ctx.mid else None,
+            top=self.visit(ctx.top),
+        )
 
     def visitParens(self, ctx: ExprParser.ParensContext):
         return self.visitChildren(ctx)[1]

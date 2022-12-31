@@ -1,12 +1,14 @@
 from dataclasses import dataclass, field
-from typing import Dict, Union, List, Optional, Iterator, Literal, Tuple
+from typing import Dict, Union, List, Optional, Iterator, Literal, Tuple, Optional
 import numpy as np
 import networkx as nx
 from .units import units
 from pint import Quantity
 
 
-# Numeric = int | float | np.ndarray
+SIM_SIZE = 100_000
+
+
 Numeric = Quantity
 
 
@@ -125,7 +127,17 @@ class InequalityResult:
         ].strip()
 
 
-AnyResult = StatementResult | AssignmentResult | InequalityResult
+@dataclass
+class VersusResult:
+    text: str
+    lhs: Optional[Numeric]
+    rhs: Optional[Numeric]
+
+    def name(self):
+        return self.text
+
+
+AnyResult = StatementResult | AssignmentResult | InequalityResult | VersusResult
 
 
 @dataclass
@@ -230,6 +242,19 @@ class Inequality:
 
 
 @dataclass
+class Versus:
+    text: str
+    lhs: "Expression"
+    rhs: "Expression"
+
+    def get_deps(self, ctx: ExecContext) -> List[str]:
+        return self.lhs.get_deps(ctx) + self.rhs.get_deps(ctx)
+
+    def execute(self, ctx: "ExecContext"):
+        return VersusResult(self.text, self.lhs.execute(ctx), self.rhs.execute(ctx))
+
+
+@dataclass
 class Statement:
     text: str
     expression: "Expression"
@@ -297,30 +322,57 @@ class BinOp:
 class Range:
     bottom: "Expression"
     top: "Expression"
+    mid: Optional["Expression"]
 
     def get_deps(self, ctx: ExecContext) -> List[str]:
-        try:
-            return self.bottom.get_deps(ctx) + self.top.get_deps(ctx)
-        except:
-            print(self.bottom)
-            print(self.top)
-            raise
+        return (
+            self.bottom.get_deps(ctx)
+            + self.top.get_deps(ctx)
+            + (self.mid.get_deps(ctx) if self.mid else [])
+        )
 
     def execute(self, ctx: "ExecContext") -> np.ndarray:
+        return self.triangular(ctx) if self.mid else self.uniform(ctx)
+
+    def triangular(self, ctx: "ExecContext") -> np.ndarray:
+        bottom = self.bottom.execute(ctx)
+        top = self.top.execute(ctx)
+        mid = self.mid.execute(ctx)
+
+        bottom, top = infer_units(bottom, top)
+        mid, top = infer_units(mid, top)
+
+        return (
+            np.random.triangular(
+                left=bottom.m,
+                mode=in_unit_of(mid, of=bottom).m,
+                right=in_unit_of(top, of=bottom).m,
+                size=SIM_SIZE,
+            )
+            * bottom.u
+        )
+
+    def uniform(self, ctx: "ExecContext") -> np.ndarray:
         bottom = self.bottom.execute(ctx)
         top = self.top.execute(ctx)
 
         bottom, top = infer_units(bottom, top)
+
         if bottom > top:
             bottom, top = top, bottom
-        # XXX: language syntax supports arbitrary expressions for bottom and top
-        # but this implementation does not.
 
-        # TODO: Either
-        # - restrict the syntax to literals & IDs only
-        # - fix the implimentation to support it
-        # - throw a specific error
-        return np.random.rand(100000) * (top - bottom) + bottom
+        return (
+            np.random.uniform(
+                low=bottom.m,
+                high=in_unit_of(top, of=bottom).m,
+                size=SIM_SIZE,
+            )
+            * bottom.u
+        )
+
+
+def in_unit_of(value, *, of):
+    return of * 0 + value
 
 
 Expression = BinOp | Value | Range | Id
@@ -354,10 +406,12 @@ class Program:
         new_assignments = set()
 
         for statement in self.statements:
+
             if isinstance(statement, Assignment):
                 ctx.add_assignment(statement.target.name, statement)
                 new_assignments.add(statement.target.name)
-            if isinstance(statement, (Statement, Inequality)):
+
+            if isinstance(statement, (Statement, Inequality, Versus)):
                 ctx.recompute()
                 results.append(statement.execute(ctx))
 

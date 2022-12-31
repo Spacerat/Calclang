@@ -3,6 +3,7 @@ from .calc_ast import (
     AssignmentResult,
     StatementResult,
     InequalityResult,
+    VersusResult,
 )
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -22,6 +23,9 @@ def display(results: ProgramResults):
 
     elif isinstance(result, InequalityResult):
         display_inequality_result(result)
+
+    elif isinstance(result, VersusResult):
+        display_versus_result(result)
 
 
 def display_inequality_result(result: InequalityResult):
@@ -72,16 +76,35 @@ def display_inequality_result(result: InequalityResult):
         plt.show()
 
 
+def display_versus_result(result: VersusResult):
+    lhs = result.lhs
+    rhs = result.rhs
+
+    if isinstance(lhs.m, (int, float)) or isinstance(rhs.m, (int, float)):
+        print("Comparison to single numbers not supported")
+
+    g = sns.jointplot(y=lhs.m, x=rhs.m, kind="hex")
+    g.plot_joint(sns.regplot, scatter=False, color="red")
+    left_name, right_name = result.text.split(" vs ")
+    plt.xlabel(label(right_name, rhs.u))
+    plt.ylabel(label(left_name, lhs.u))
+
+
 def format_plots(ax1, ax2, name, unit=None):
     ax1.grid()
     ax1.set_ylabel("Cumulative probability")
 
     ax2.set_ylabel("Probability density")
     ax2.set_yticklabels([])
+
+    ax2.set_xlabel(label(name, unit))
+
+
+def label(name, unit=None):
     if unit and str(unit) != "dimensionless":
-        ax2.set_xlabel(f"{name} ({unit})")
+        return f"{name} ({unit})"
     else:
-        ax2.set_xlabel(name)
+        return name
 
 
 def display_basic_result(result: StatementResult | AssignmentResult):

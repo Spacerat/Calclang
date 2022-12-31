@@ -89,12 +89,12 @@ class ExprParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by ExprParser#rangeSpec.
-    def enterRangeSpec(self, ctx:ExprParser.RangeSpecContext):
+    # Enter a parse tree produced by ExprParser#versus.
+    def enterVersus(self, ctx:ExprParser.VersusContext):
         pass
 
-    # Exit a parse tree produced by ExprParser#rangeSpec.
-    def exitRangeSpec(self, ctx:ExprParser.RangeSpecContext):
+    # Exit a parse tree produced by ExprParser#versus.
+    def exitVersus(self, ctx:ExprParser.VersusContext):
         pass
 
 
@@ -116,15 +116,6 @@ class ExprParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by ExprParser#parens.
-    def enterParens(self, ctx:ExprParser.ParensContext):
-        pass
-
-    # Exit a parse tree produced by ExprParser#parens.
-    def exitParens(self, ctx:ExprParser.ParensContext):
-        pass
-
-
     # Enter a parse tree produced by ExprParser#ident.
     def enterIdent(self, ctx:ExprParser.IdentContext):
         pass
@@ -143,6 +134,24 @@ class ExprParserListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by ExprParser#value.
+    def enterValue(self, ctx:ExprParser.ValueContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#value.
+    def exitValue(self, ctx:ExprParser.ValueContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#parens.
+    def enterParens(self, ctx:ExprParser.ParensContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#parens.
+    def exitParens(self, ctx:ExprParser.ParensContext):
+        pass
+
+
     # Enter a parse tree produced by ExprParser#range.
     def enterRange(self, ctx:ExprParser.RangeContext):
         pass
@@ -152,12 +161,12 @@ class ExprParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by ExprParser#value.
-    def enterValue(self, ctx:ExprParser.ValueContext):
+    # Enter a parse tree produced by ExprParser#simple.
+    def enterSimple(self, ctx:ExprParser.SimpleContext):
         pass
 
-    # Exit a parse tree produced by ExprParser#value.
-    def exitValue(self, ctx:ExprParser.ValueContext):
+    # Exit a parse tree produced by ExprParser#simple.
+    def exitSimple(self, ctx:ExprParser.SimpleContext):
         pass
 
 

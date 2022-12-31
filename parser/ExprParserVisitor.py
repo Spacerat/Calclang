@@ -54,8 +54,8 @@ class ExprParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#rangeSpec.
-    def visitRangeSpec(self, ctx:ExprParser.RangeSpecContext):
+    # Visit a parse tree produced by ExprParser#versus.
+    def visitVersus(self, ctx:ExprParser.VersusContext):
         return self.visitChildren(ctx)
 
 
@@ -69,11 +69,6 @@ class ExprParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#parens.
-    def visitParens(self, ctx:ExprParser.ParensContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by ExprParser#ident.
     def visitIdent(self, ctx:ExprParser.IdentContext):
         return self.visitChildren(ctx)
@@ -84,13 +79,23 @@ class ExprParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by ExprParser#value.
+    def visitValue(self, ctx:ExprParser.ValueContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#parens.
+    def visitParens(self, ctx:ExprParser.ParensContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by ExprParser#range.
     def visitRange(self, ctx:ExprParser.RangeContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#value.
-    def visitValue(self, ctx:ExprParser.ValueContext):
+    # Visit a parse tree produced by ExprParser#simple.
+    def visitSimple(self, ctx:ExprParser.SimpleContext):
         return self.visitChildren(ctx)
 
 

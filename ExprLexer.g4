@@ -21,6 +21,7 @@ GREATER_THAN: '>';
 LESS_THAN: '<';
 LSQPAREN: '[';
 RSQPAREN: ']';
+VERSUS: 'vs';
 
 DOLLAR: '$';
 POUND: '£';
@@ -36,6 +37,8 @@ INT: (MINUS? [1-9][0-9]* | '0');
 FLOAT: INT [.] INT;
 ID: [a-zA-Z_][a-zA-Z_0-9]*;
 BRACKET_ID: '\'' (~['])* '\'';
+
+DOTS: '..';
 
 WS: [ \t\r\n\f]+ -> skip;
 NL: [\r\n]+;
