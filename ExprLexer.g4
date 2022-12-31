@@ -29,6 +29,8 @@ DAYS: 'day' 's'?;
 WEEKS: 'week' 's'?;
 HOURS: 'hour' 's'?;
 MINUTES: 'minute' 's'?;
+SECONDS: 'second' 's'?;
+YEARS: 'year' 's'?;
 
 INT: (MINUS? [1-9][0-9]* | '0');
 FLOAT: INT [.] INT;

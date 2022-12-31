@@ -21,6 +21,11 @@ from .calc_ast import (
     Inequality,
 )
 
+currency_units = {
+    "$": "dollar",
+    "£": "pound",
+}
+
 
 class CalcAstVisitor(ExprParserVisitor):
     def aggregateResult(self, aggregate, nextResult):
@@ -80,12 +85,13 @@ class CalcAstVisitor(ExprParserVisitor):
         )
 
     def visitCurrencyValue(self, ctx: ExprParser.CurrencyValueContext):
-        unit = ctx.symbol.text
+        unit = currency_units[ctx.symbol.text]
+
         return Value(self.visit(ctx.amount), unit)
 
     def visitValue(self, ctx: ExprParser.ValueContext):
         unit = self.visit(ctx.valueUnit) if ctx.valueUnit else None
-        return Value(self.visit(ctx.value), unit)
+        return Value(self.visit(ctx.value), unit=unit)
 
     def visitNumericLiteral(self, ctx: ExprParser.NumericLiteralContext):
         return float(ctx.getText())
@@ -95,6 +101,9 @@ class CalcAstVisitor(ExprParserVisitor):
 
     def visitRawId(self, ctx: ExprParser.RawIdContext):
         return Id(ctx.getText())
+
+    def visitUnit(self, ctx: ExprParser.UnitContext):
+        return ctx.getText()
 
     def visitBracketId(self, ctx: ExprParser.BracketIdContext):
         return Id(ctx.getText()[1:-1])

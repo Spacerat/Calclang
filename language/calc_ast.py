@@ -1,10 +1,13 @@
 from dataclasses import dataclass, field
-from typing import Dict, Union, List, Optional, Iterator, Literal
+from typing import Dict, Union, List, Optional, Iterator, Literal, Tuple
 import numpy as np
 import networkx as nx
+from .units import units
+from pint import Quantity
 
 
-Numeric = int | float | np.ndarray
+# Numeric = int | float | np.ndarray
+Numeric = Quantity
 
 
 @dataclass
@@ -127,12 +130,12 @@ AnyResult = StatementResult | AssignmentResult | InequalityResult
 
 @dataclass
 class ProgramResults:
-    results: List[AnyResult]
+    statementResults: List[AnyResult]
     context: "ExecContext"
 
     @property
     def last_result(self):
-        return self.results[-1] if self.results else None
+        return self.statementResults[-1] if self.statementResults else None
 
 
 @dataclass
@@ -247,7 +250,11 @@ class Value:
         return []
 
     def execute(self, ctx: "ExecContext"):
-        return self.literal
+        # return self.literal
+        if self.unit:
+            return self.literal * units[self.unit]
+        else:
+            return self.literal * units.dimensionless
 
 
 @dataclass
@@ -263,9 +270,9 @@ class BinOp:
         if val is not None:
             return val
         if self.op in ("+", "-"):
-            return 0
+            return 0 * units.dimensionless
         if self.op in ("*", "/"):
-            return 1
+            return 1 * units.dimensionless
 
     def execute(self, ctx: "ExecContext"):
         lhs = self.default_val(self.lhs.execute(ctx))
@@ -298,12 +305,30 @@ class Range:
     def execute(self, ctx: "ExecContext") -> np.ndarray:
         bottom = self.bottom.execute(ctx)
         top = self.top.execute(ctx)
+
+        bottom, top = infer_units(bottom, top)
         if bottom > top:
             bottom, top = top, bottom
+        # XXX: language syntax supports arbitrary expressions for bottom and top
+        # but this implementation does not.
+
+        # TODO: Either
+        # - restrict the syntax to literals & IDs only
+        # - fix the implimentation to support it
+        # - throw a specific error
         return np.random.rand(100000) * (top - bottom) + bottom
 
 
 Expression = BinOp | Value | Range | Id
+
+
+def infer_units(lhs: Quantity, rhs: Quantity) -> Tuple[Quantity, Quantity]:
+    match (lhs.unitless, rhs.unitless):
+        case (True, False):
+            return (lhs * rhs.u, rhs)
+        case (False, True):
+            return (lhs, rhs * lhs.u)
+    return (lhs, rhs)
 
 
 @dataclass
@@ -337,7 +362,7 @@ class Program:
             top = ctx.get_highest_node(new_assignments)
             results = [ctx.assignments[top].execute(ctx)]
 
-        return ProgramResults(list(filter(None, results)), ctx)
+        return ProgramResults(statementResults=list(filter(None, results)), context=ctx)
 
 
 def subgraph_dag_from_nodes(g, nodes):

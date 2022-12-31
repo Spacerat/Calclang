@@ -19,7 +19,7 @@ stat:
 
 rangeSpec: '(' kind = ID ')';
 
-unit: WEEKS | DAYS | HOURS | MINUTES;
+unit: YEARS | WEEKS | DAYS | HOURS | MINUTES | SECONDS;
 
 numericLiteral: INT | FLOAT;
 

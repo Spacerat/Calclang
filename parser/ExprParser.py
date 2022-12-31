@@ -10,7 +10,7 @@ else:
 
 def serializedATN():
     return [
-        4,1,32,127,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,34,127,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,1,0,5,0,24,8,0,10,0,12,0,27,
         9,0,1,0,1,0,1,1,1,1,1,2,1,2,3,2,35,8,2,1,3,1,3,3,3,39,8,3,1,4,1,
         4,1,4,1,4,3,4,45,8,4,1,4,1,4,1,4,1,4,3,4,51,8,4,1,4,1,4,3,4,55,8,
@@ -20,13 +20,13 @@ def serializedATN():
         8,8,5,8,103,8,8,10,8,12,8,106,9,8,1,9,1,9,1,9,1,9,1,9,5,9,113,8,
         9,10,9,12,9,116,9,9,1,9,1,9,1,10,1,10,1,10,1,10,1,10,3,10,125,8,
         10,1,10,0,1,16,11,0,2,4,6,8,10,12,14,16,18,20,0,6,1,0,17,18,1,0,
-        23,26,1,0,27,28,1,0,21,22,1,0,15,16,1,0,13,14,137,0,25,1,0,0,0,2,
+        23,28,1,0,29,30,1,0,21,22,1,0,15,16,1,0,13,14,137,0,25,1,0,0,0,2,
         30,1,0,0,0,4,34,1,0,0,0,6,38,1,0,0,0,8,60,1,0,0,0,10,62,1,0,0,0,
         12,66,1,0,0,0,14,68,1,0,0,0,16,82,1,0,0,0,18,107,1,0,0,0,20,124,
         1,0,0,0,22,24,3,8,4,0,23,22,1,0,0,0,24,27,1,0,0,0,25,23,1,0,0,0,
         25,26,1,0,0,0,26,28,1,0,0,0,27,25,1,0,0,0,28,29,5,0,0,1,29,1,1,0,
         0,0,30,31,5,9,0,0,31,3,1,0,0,0,32,35,3,6,3,0,33,35,3,18,9,0,34,32,
-        1,0,0,0,34,33,1,0,0,0,35,5,1,0,0,0,36,39,5,29,0,0,37,39,5,30,0,0,
+        1,0,0,0,34,33,1,0,0,0,35,5,1,0,0,0,36,39,5,31,0,0,37,39,5,32,0,0,
         38,36,1,0,0,0,38,37,1,0,0,0,39,7,1,0,0,0,40,41,3,6,3,0,41,42,5,7,
         0,0,42,44,3,16,8,0,43,45,3,2,1,0,44,43,1,0,0,0,44,45,1,0,0,0,45,
         61,1,0,0,0,46,47,3,18,9,0,47,48,5,7,0,0,48,50,3,16,8,0,49,51,3,2,
@@ -34,7 +34,7 @@ def serializedATN():
         55,3,2,1,0,54,53,1,0,0,0,54,55,1,0,0,0,55,61,1,0,0,0,56,57,3,16,
         8,0,57,58,7,0,0,0,58,59,3,16,8,0,59,61,1,0,0,0,60,40,1,0,0,0,60,
         46,1,0,0,0,60,52,1,0,0,0,60,56,1,0,0,0,61,9,1,0,0,0,62,63,5,10,0,
-        0,63,64,5,29,0,0,64,65,5,11,0,0,65,11,1,0,0,0,66,67,7,1,0,0,67,13,
+        0,63,64,5,31,0,0,64,65,5,11,0,0,65,11,1,0,0,0,66,67,7,1,0,0,67,13,
         1,0,0,0,68,69,7,2,0,0,69,15,1,0,0,0,70,71,6,8,-1,0,71,83,3,4,2,0,
         72,73,7,3,0,0,73,83,3,14,7,0,74,76,3,14,7,0,75,77,3,12,6,0,76,75,
         1,0,0,0,76,77,1,0,0,0,77,83,1,0,0,0,78,79,5,10,0,0,79,80,3,16,8,
@@ -49,8 +49,8 @@ def serializedATN():
         1,0,0,0,106,104,1,0,0,0,107,108,3,6,3,0,108,109,5,19,0,0,109,114,
         3,20,10,0,110,111,5,8,0,0,111,113,3,20,10,0,112,110,1,0,0,0,113,
         116,1,0,0,0,114,112,1,0,0,0,114,115,1,0,0,0,115,117,1,0,0,0,116,
-        114,1,0,0,0,117,118,5,20,0,0,118,19,1,0,0,0,119,125,5,29,0,0,120,
-        125,5,27,0,0,121,122,5,29,0,0,122,123,7,5,0,0,123,125,5,27,0,0,124,
+        114,1,0,0,0,117,118,5,20,0,0,118,19,1,0,0,0,119,125,5,31,0,0,120,
+        125,5,29,0,0,121,122,5,31,0,0,122,123,7,5,0,0,123,125,5,29,0,0,124,
         119,1,0,0,0,124,120,1,0,0,0,124,121,1,0,0,0,125,21,1,0,0,0,14,25,
         34,38,44,50,54,60,76,82,100,102,104,114,124
     ]
@@ -75,8 +75,8 @@ class ExprParser ( Parser ):
                       "LPAREN", "RPAREN", "TO", "PLUS", "MINUS", "TIMES", 
                       "DIVIDE", "GREATER_THAN", "LESS_THAN", "LSQPAREN", 
                       "RSQPAREN", "DOLLAR", "POUND", "DAYS", "WEEKS", "HOURS", 
-                      "MINUTES", "INT", "FLOAT", "ID", "BRACKET_ID", "WS", 
-                      "NL" ]
+                      "MINUTES", "SECONDS", "YEARS", "INT", "FLOAT", "ID", 
+                      "BRACKET_ID", "WS", "NL" ]
 
     RULE_program = 0
     RULE_terminate = 1
@@ -120,12 +120,14 @@ class ExprParser ( Parser ):
     WEEKS=24
     HOURS=25
     MINUTES=26
-    INT=27
-    FLOAT=28
-    ID=29
-    BRACKET_ID=30
-    WS=31
-    NL=32
+    SECONDS=27
+    YEARS=28
+    INT=29
+    FLOAT=30
+    ID=31
+    BRACKET_ID=32
+    WS=33
+    NL=34
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -184,7 +186,7 @@ class ExprParser ( Parser ):
             self.state = 25
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while ((_la) & ~0x3f) == 0 and ((1 << _la) & 2019558400) != 0:
+            while ((_la) & ~0x3f) == 0 and ((1 << _la) & 8059356160) != 0:
                 self.state = 22
                 localctx.statements = self.stat()
                 self.state = 27
@@ -388,13 +390,13 @@ class ExprParser ( Parser ):
             self.state = 38
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [29]:
+            if token in [31]:
                 localctx = ExprParser.RawIdContext(self, localctx)
                 self.enterOuterAlt(localctx, 1)
                 self.state = 36
                 self.match(ExprParser.ID)
                 pass
-            elif token in [30]:
+            elif token in [32]:
                 localctx = ExprParser.BracketIdContext(self, localctx)
                 self.enterOuterAlt(localctx, 2)
                 self.state = 37
@@ -718,6 +720,9 @@ class ExprParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
+        def YEARS(self):
+            return self.getToken(ExprParser.YEARS, 0)
+
         def WEEKS(self):
             return self.getToken(ExprParser.WEEKS, 0)
 
@@ -729,6 +734,9 @@ class ExprParser ( Parser ):
 
         def MINUTES(self):
             return self.getToken(ExprParser.MINUTES, 0)
+
+        def SECONDS(self):
+            return self.getToken(ExprParser.SECONDS, 0)
 
         def getRuleIndex(self):
             return ExprParser.RULE_unit
@@ -759,7 +767,7 @@ class ExprParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 66
             _la = self._input.LA(1)
-            if not(((_la) & ~0x3f) == 0 and ((1 << _la) & 125829120) != 0):
+            if not(((_la) & ~0x3f) == 0 and ((1 << _la) & 528482304) != 0):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
@@ -815,7 +823,7 @@ class ExprParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 68
             _la = self._input.LA(1)
-            if not(_la==27 or _la==28):
+            if not(_la==29 or _la==30):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
@@ -1052,7 +1060,7 @@ class ExprParser ( Parser ):
             self.state = 82
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [29, 30]:
+            if token in [31, 32]:
                 localctx = ExprParser.IdentContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
@@ -1075,7 +1083,7 @@ class ExprParser ( Parser ):
                 self.state = 73
                 localctx.amount = self.numericLiteral()
                 pass
-            elif token in [27, 28]:
+            elif token in [29, 30]:
                 localctx = ExprParser.ValueContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx

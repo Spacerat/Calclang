@@ -22,19 +22,21 @@ def display(results: ProgramResults):
 
     elif isinstance(result, InequalityResult):
         display_inequality_result(result)
+    else:
+        print("nope")
 
 
 def display_inequality_result(result: InequalityResult):
     lhs = result.lhs
     rhs = result.rhs
     op = result.op
-    if isinstance(lhs, (int, float)) and isinstance(rhs, np.ndarray):
+    if isinstance(lhs.m, (int, float)) and isinstance(rhs.m, np.ndarray):
         lhs, rhs = rhs, lhs
 
-    if isinstance(lhs, np.ndarray) and isinstance(rhs, np.ndarray):
+    if isinstance(lhs.m, np.ndarray) and isinstance(rhs.m, np.ndarray):
         print("Inequalities between distributions not yet supported")
 
-    elif isinstance(lhs, (int, float)) and isinstance(rhs, (int, float)):
+    elif isinstance(lhs.m, (int, float)) and isinstance(rhs.m, (int, float)):
         if op == ">":
             statement = "is" if lhs > rhs else "is not"
             print(f"{lhs} {statement} greater than {rhs}")
@@ -42,27 +44,27 @@ def display_inequality_result(result: InequalityResult):
             statement = "is" if lhs < rhs else "is not"
             print(f"{lhs} {statement} less than {rhs}")
 
-    elif isinstance(lhs, np.ndarray) and isinstance(rhs, (int, float)):
+    elif isinstance(lhs.m, np.ndarray) and isinstance(rhs.m, (int, float)):
         fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 
         greater = op == ">"
         name = result.name()
 
         split_hist(
-            lhs, ax=ax1, threshold=rhs, greater=greater, cumulative=True, name=name
+            lhs.m, ax=ax1, threshold=rhs, greater=greater, cumulative=True, name=name
         )
 
         split_hist(
-            lhs, ax=ax2, threshold=rhs, greater=greater, cumulative=False, name=name
+            lhs.m, ax=ax2, threshold=rhs, greater=greater, cumulative=False, name=name
         )
 
-        proba = np.mean(lhs > rhs if greater else lhs < rhs)
+        proba = np.mean(lhs.m > rhs if greater else lhs.m < rhs)
 
         fig.suptitle(f"P ( {result.text} ) = {proba:.0%}")
 
         human_text = result.text.replace("<", "under").replace(">", "over")
 
-        format_plots(ax1, ax2, name)
+        format_plots(ax1, ax2, name, lhs.u)
 
         printmd(f"**Probability of '{human_text}'**: {proba:.2%}")
         printmd(f"**Mean {name}**: {np.mean(lhs):n}")
@@ -72,41 +74,41 @@ def display_inequality_result(result: InequalityResult):
         plt.show()
 
 
-def format_plots(ax1, ax2, name):
+def format_plots(ax1, ax2, name, unit):
     ax1.grid()
     ax1.set_ylabel("Cumulative probability")
 
     ax2.set_ylabel("Probability density")
     ax2.set_yticklabels([])
-    ax2.set_xlabel(name)
+    ax2.set_xlabel(f"{name} ({unit})")
 
 
 def display_basic_result(result: StatementResult | AssignmentResult):
     value = result.value
     title = result.name()
 
-    if isinstance(value, (int, float)):
+    if isinstance(value.m, (int, float)):
         print(f"{title}: {result.value}")
 
-    elif isinstance(result.value, np.ndarray):
-        if not isinstance(value, np.ndarray):
-            return
+    elif isinstance(value.m, np.ndarray):
 
         fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
         fig.suptitle(title)
 
-        sns.histplot(value, stat="percent", cumulative=True, ax=ax1)
+        sns.histplot(value.m, stat="percent", cumulative=True, ax=ax1)
 
-        sns.histplot(value, stat="percent", ax=ax2)
+        sns.histplot(value.m, stat="percent", ax=ax2)
 
-        format_plots(ax1, ax2, result.name())
+        format_plots(ax1, ax2, result.name(), value.u)
 
         fig.tight_layout()
 
-        printmd(f"**Mean {result.name()}**: {np.mean(result.value):n}")
-        printmd(f"**Median {result.name()}**: {np.median(result.value):n}")
+        printmd(f"**Mean {result.name()}**: {np.mean(value):n}")
+        printmd(f"**Median {result.name()}**: {np.median(value):n}")
 
         plt.show()
+    else:
+        print(f"Unknown type {value.m.__class__}")
 
 
 def split_hist(data, *, ax, threshold, greater, cumulative, name):
@@ -127,7 +129,7 @@ def split_hist(data, *, ax, threshold, greater, cumulative, name):
             bins,
             weights=hist,
             color=rcol,
-            label=f"{name} > {threshold}",
+            label=f"{name} > {threshold.m}",
         )
     elif threshold > max(data):
         ax.hist(
@@ -135,7 +137,7 @@ def split_hist(data, *, ax, threshold, greater, cumulative, name):
             bins,
             weights=hist,
             color=lcol,
-            label=f"{name} < {threshold}",
+            label=f"{name} < {threshold.m}",
         )
     else:
         thresh_idx = np.argmax(bins > threshold)
@@ -145,7 +147,7 @@ def split_hist(data, *, ax, threshold, greater, cumulative, name):
             bins[:thresh_idx],  # type: ignore
             weights=hist[: thresh_idx - 1],
             color=lcol,
-            label=f"{name} < {threshold}",
+            label=f"{name} < {threshold.m}",
         )
 
         ax.hist(
@@ -153,7 +155,7 @@ def split_hist(data, *, ax, threshold, greater, cumulative, name):
             bins[thresh_idx - 1 :],  # type: ignore
             weights=hist[thresh_idx - 1 :],
             color=rcol,
-            label=f"{name} > {threshold}",
+            label=f"{name} > {threshold.m}",
         )
 
     ax.legend()
