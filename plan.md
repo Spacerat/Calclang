@@ -6,6 +6,9 @@
 - [ ] Events with chance
 - [ ] Distributions: triangle, normal
 - [ ] Task graphs
+  - [ ] Basic
+  - [ ] Fixed number of resources
+  - [ ] Resource requirements ('skills')
 - [x] Basic unit handling (no unit mixing)
 - [x] Time unit conversion (minutes, seconds)
 - [x] Unit algebra (dollars/time)
@@ -17,6 +20,7 @@
 - [ ] Percentile table (10%, 50%, 90%)
 - [ ] Cleaner numeric precisiion (2-3 significant digits max)
 - [ ] Units in output
+- [ ] Sensitivity analysis
 
 ## Error handling
 
@@ -29,6 +33,7 @@
 - [ ] Other functions
 - [ ] Function definitions
 - [ ] Dates?
+  - [ ] Business days?
 
 ## Bugs
 
