@@ -278,6 +278,10 @@ class BinOp:
         lhs = self.default_val(self.lhs.execute(ctx))
         rhs = self.default_val(self.rhs.execute(ctx))
 
+        if self.op in ("-", "+"):
+            # Currently unclear whether this is a good idea
+            lhs, rhs = infer_units(lhs, rhs)
+
         if self.op == "+":
             return lhs + rhs
         if self.op == "-":
