@@ -1,6 +1,6 @@
 from language import run, ExecContext
 import locale
-from IPython.core.magic import Magics, magics_class, line_cell_magic
+from IPython.core.magic import Magics, magics_class, line_cell_magic, line_magic
 from IPython import get_ipython, InteractiveShell
 
 
@@ -18,10 +18,13 @@ class CalcMagics(Magics):
         new_context = run(str, self.context)
         self.context = new_context
 
+    @line_magic
+    def ctx(self, line):
+        return self.context.values
+
     @line_cell_magic
     def what_if(self, line, cell=None):
         str = self.get_str(line, cell)
-
         run(str, self.context)
 
 
