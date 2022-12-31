@@ -69,11 +69,6 @@ class ExprParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#currency.
-    def visitCurrency(self, ctx:ExprParser.CurrencyContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by ExprParser#parens.
     def visitParens(self, ctx:ExprParser.ParensContext):
         return self.visitChildren(ctx)
@@ -81,6 +76,11 @@ class ExprParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by ExprParser#ident.
     def visitIdent(self, ctx:ExprParser.IdentContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#currencyValue.
+    def visitCurrencyValue(self, ctx:ExprParser.CurrencyValueContext):
         return self.visitChildren(ctx)
 
 

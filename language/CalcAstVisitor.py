@@ -79,9 +79,9 @@ class CalcAstVisitor(ExprParserVisitor):
             self.visit(ctx.rhs),
         )
 
-    def visitCurrency(self, ctx: ExprParser.CurrencyContext):
+    def visitCurrencyValue(self, ctx: ExprParser.CurrencyValueContext):
         unit = ctx.symbol.text
-        return Value(self.visit(ctx.value), unit)
+        return Value(self.visit(ctx.amount), unit)
 
     def visitValue(self, ctx: ExprParser.ValueContext):
         unit = self.visit(ctx.valueUnit) if ctx.valueUnit else None
@@ -92,9 +92,6 @@ class CalcAstVisitor(ExprParserVisitor):
 
     def visitBinop(self, ctx: ExprParser.BinopContext):
         return BinOp(self.visit(ctx.lhs), ctx.op.text, self.visit(ctx.rhs))
-
-    def visitIdent(self, ctx: ExprParser.IdentContext):
-        return self.visitChildren(ctx)[0]
 
     def visitRawId(self, ctx: ExprParser.RawIdContext):
         return Id(ctx.getText())
@@ -113,5 +110,8 @@ class CalcAstVisitor(ExprParserVisitor):
 
         if result is None or (len(result) == 1 and result[0] is None):
             return Unknown(ctx.getText())
+
+        if len(result) == 1:
+            return result[0]
 
         return result

@@ -24,15 +24,15 @@ unit: WEEKS | DAYS | HOURS | MINUTES;
 numericLiteral: INT | FLOAT;
 
 expr:
-	id												# ident
-	| symbol = (DOLLAR | POUND) amount = FLOAT		# currencyValue
-	| value = numericLiteral valueUnit = unit?		# value
-	| '(' expr ')'									# parens
-	| lhs = expr op = (TIMES | DIVIDE) rhs = expr	# binop
-	| bottom = expr TO top = expr rangeSpec?		# range
-	| lhs = expr op = (PLUS | MINUS) rhs = expr		# binop
-	| lhs = expr op = AND rhs = expr				# binop
-	| lhs = expr op = THEN rhs = expr				# binop;
+	id													# ident
+	| symbol = (DOLLAR | POUND) amount = numericLiteral	# currencyValue
+	| value = numericLiteral valueUnit = unit?			# value
+	| '(' expr ')'										# parens
+	| lhs = expr op = (TIMES | DIVIDE) rhs = expr		# binop
+	| bottom = expr TO top = expr rangeSpec?			# range
+	| lhs = expr op = (PLUS | MINUS) rhs = expr			# binop
+	| lhs = expr op = AND rhs = expr					# binop
+	| lhs = expr op = THEN rhs = expr					# binop;
 
 /* Sequences */
 

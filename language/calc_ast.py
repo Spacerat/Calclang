@@ -69,7 +69,6 @@ class ExecContext:
         try:
             return self.values[name]
         except KeyError:
-            # print(f"{name} is not defined")
             print(f"{name} is not defined")
             return None
 
@@ -289,7 +288,12 @@ class Range:
     top: "Expression"
 
     def get_deps(self, ctx: ExecContext) -> List[str]:
-        return self.bottom.get_deps(ctx) + self.top.get_deps(ctx)
+        try:
+            return self.bottom.get_deps(ctx) + self.top.get_deps(ctx)
+        except:
+            print(self.bottom)
+            print(self.top)
+            raise
 
     def execute(self, ctx: "ExecContext") -> np.ndarray:
         bottom = self.bottom.execute(ctx)

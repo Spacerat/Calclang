@@ -116,15 +116,6 @@ class ExprParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by ExprParser#currency.
-    def enterCurrency(self, ctx:ExprParser.CurrencyContext):
-        pass
-
-    # Exit a parse tree produced by ExprParser#currency.
-    def exitCurrency(self, ctx:ExprParser.CurrencyContext):
-        pass
-
-
     # Enter a parse tree produced by ExprParser#parens.
     def enterParens(self, ctx:ExprParser.ParensContext):
         pass
@@ -140,6 +131,15 @@ class ExprParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by ExprParser#ident.
     def exitIdent(self, ctx:ExprParser.IdentContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#currencyValue.
+    def enterCurrencyValue(self, ctx:ExprParser.CurrencyValueContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#currencyValue.
+    def exitCurrencyValue(self, ctx:ExprParser.CurrencyValueContext):
         pass
 
 
