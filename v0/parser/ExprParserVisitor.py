@@ -74,6 +74,11 @@ class ExprParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by ExprParser#date.
+    def visitDate(self, ctx:ExprParser.DateContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by ExprParser#currencyValue.
     def visitCurrencyValue(self, ctx:ExprParser.CurrencyValueContext):
         return self.visitChildren(ctx)

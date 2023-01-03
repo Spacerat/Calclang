@@ -19,12 +19,20 @@ stat:
 	// versus could also use expr in theory but starting with just basicId for easier chart titles
 	| lhs = basicId VERSUS rhs = basicId # versus;
 
-unit: YEARS | WEEKS | DAYS | HOURS | MINUTES | SECONDS;
+unit:
+	YEARS
+	| WEEKS
+	| DAYS
+	| HOURS
+	| MINUTES
+	| SECONDS
+	| BUSINESS_DAYS;
 
 numericLiteral: INT | FLOAT;
 
 simpleExpr:
 	id													# ident
+	| SLASH_DATE										# date
 	| symbol = (DOLLAR | POUND) amount = numericLiteral	# currencyValue
 	| value = numericLiteral valueUnit = unit?			# value;
 

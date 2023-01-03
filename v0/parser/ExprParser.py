@@ -10,53 +10,54 @@ else:
 
 def serializedATN():
     return [
-        4,1,36,138,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,38,139,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,1,0,5,0,24,8,0,10,0,12,0,27,
         9,0,1,0,1,0,1,1,1,1,1,2,1,2,3,2,35,8,2,1,3,1,3,3,3,39,8,3,1,4,1,
         4,1,4,1,4,3,4,45,8,4,1,4,1,4,1,4,1,4,3,4,51,8,4,1,4,1,4,3,4,55,8,
         4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,65,8,4,1,5,1,5,1,6,1,6,1,7,
-        1,7,1,7,1,7,1,7,3,7,76,8,7,3,7,78,8,7,1,8,1,8,1,8,1,8,1,8,1,8,1,
-        8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,100,8,
-        8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,5,8,114,8,8,10,
-        8,12,8,117,9,8,1,9,1,9,1,9,1,9,1,9,5,9,124,8,9,10,9,12,9,127,9,9,
-        1,9,1,9,1,10,1,10,1,10,1,10,1,10,3,10,136,8,10,1,10,0,1,16,11,0,
-        2,4,6,8,10,12,14,16,18,20,0,6,1,0,17,18,1,0,24,29,1,0,30,31,1,0,
-        22,23,1,0,15,16,1,0,13,14,150,0,25,1,0,0,0,2,30,1,0,0,0,4,34,1,0,
-        0,0,6,38,1,0,0,0,8,64,1,0,0,0,10,66,1,0,0,0,12,68,1,0,0,0,14,77,
-        1,0,0,0,16,99,1,0,0,0,18,118,1,0,0,0,20,135,1,0,0,0,22,24,3,8,4,
+        1,7,1,7,1,7,1,7,1,7,3,7,77,8,7,3,7,79,8,7,1,8,1,8,1,8,1,8,1,8,1,
+        8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,101,
+        8,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,5,8,115,8,8,
+        10,8,12,8,118,9,8,1,9,1,9,1,9,1,9,1,9,5,9,125,8,9,10,9,12,9,128,
+        9,9,1,9,1,9,1,10,1,10,1,10,1,10,1,10,3,10,137,8,10,1,10,0,1,16,11,
+        0,2,4,6,8,10,12,14,16,18,20,0,6,1,0,17,18,1,0,24,30,1,0,32,33,1,
+        0,22,23,1,0,15,16,1,0,13,14,152,0,25,1,0,0,0,2,30,1,0,0,0,4,34,1,
+        0,0,0,6,38,1,0,0,0,8,64,1,0,0,0,10,66,1,0,0,0,12,68,1,0,0,0,14,78,
+        1,0,0,0,16,100,1,0,0,0,18,119,1,0,0,0,20,136,1,0,0,0,22,24,3,8,4,
         0,23,22,1,0,0,0,24,27,1,0,0,0,25,23,1,0,0,0,25,26,1,0,0,0,26,28,
         1,0,0,0,27,25,1,0,0,0,28,29,5,0,0,1,29,1,1,0,0,0,30,31,5,9,0,0,31,
         3,1,0,0,0,32,35,3,6,3,0,33,35,3,18,9,0,34,32,1,0,0,0,34,33,1,0,0,
-        0,35,5,1,0,0,0,36,39,5,32,0,0,37,39,5,33,0,0,38,36,1,0,0,0,38,37,
+        0,35,5,1,0,0,0,36,39,5,34,0,0,37,39,5,35,0,0,38,36,1,0,0,0,38,37,
         1,0,0,0,39,7,1,0,0,0,40,41,3,6,3,0,41,42,5,7,0,0,42,44,3,16,8,0,
         43,45,3,2,1,0,44,43,1,0,0,0,44,45,1,0,0,0,45,65,1,0,0,0,46,47,3,
         18,9,0,47,48,5,7,0,0,48,50,3,16,8,0,49,51,3,2,1,0,50,49,1,0,0,0,
         50,51,1,0,0,0,51,65,1,0,0,0,52,54,3,16,8,0,53,55,3,2,1,0,54,53,1,
         0,0,0,54,55,1,0,0,0,55,65,1,0,0,0,56,57,3,16,8,0,57,58,7,0,0,0,58,
-        59,3,16,8,0,59,65,1,0,0,0,60,61,3,16,8,0,61,62,5,21,0,0,62,63,3,
-        16,8,0,63,65,1,0,0,0,64,40,1,0,0,0,64,46,1,0,0,0,64,52,1,0,0,0,64,
-        56,1,0,0,0,64,60,1,0,0,0,65,9,1,0,0,0,66,67,7,1,0,0,67,11,1,0,0,
-        0,68,69,7,2,0,0,69,13,1,0,0,0,70,78,3,4,2,0,71,72,7,3,0,0,72,78,
-        3,12,6,0,73,75,3,12,6,0,74,76,3,10,5,0,75,74,1,0,0,0,75,76,1,0,0,
-        0,76,78,1,0,0,0,77,70,1,0,0,0,77,71,1,0,0,0,77,73,1,0,0,0,78,15,
-        1,0,0,0,79,80,6,8,-1,0,80,100,3,14,7,0,81,82,5,10,0,0,82,83,3,16,
-        8,0,83,84,5,11,0,0,84,100,1,0,0,0,85,86,3,14,7,0,86,87,5,12,0,0,
-        87,88,3,14,7,0,88,100,1,0,0,0,89,90,3,14,7,0,90,91,5,34,0,0,91,92,
-        3,14,7,0,92,100,1,0,0,0,93,94,3,14,7,0,94,95,5,34,0,0,95,96,3,14,
-        7,0,96,97,5,34,0,0,97,98,3,14,7,0,98,100,1,0,0,0,99,79,1,0,0,0,99,
-        81,1,0,0,0,99,85,1,0,0,0,99,89,1,0,0,0,99,93,1,0,0,0,100,115,1,0,
-        0,0,101,102,10,7,0,0,102,103,7,4,0,0,103,114,3,16,8,8,104,105,10,
-        3,0,0,105,106,7,5,0,0,106,114,3,16,8,4,107,108,10,2,0,0,108,109,
-        5,3,0,0,109,114,3,16,8,3,110,111,10,1,0,0,111,112,5,4,0,0,112,114,
-        3,16,8,2,113,101,1,0,0,0,113,104,1,0,0,0,113,107,1,0,0,0,113,110,
-        1,0,0,0,114,117,1,0,0,0,115,113,1,0,0,0,115,116,1,0,0,0,116,17,1,
-        0,0,0,117,115,1,0,0,0,118,119,3,6,3,0,119,120,5,19,0,0,120,125,3,
-        20,10,0,121,122,5,8,0,0,122,124,3,20,10,0,123,121,1,0,0,0,124,127,
-        1,0,0,0,125,123,1,0,0,0,125,126,1,0,0,0,126,128,1,0,0,0,127,125,
-        1,0,0,0,128,129,5,20,0,0,129,19,1,0,0,0,130,136,5,32,0,0,131,136,
-        5,30,0,0,132,133,5,32,0,0,133,134,7,5,0,0,134,136,5,30,0,0,135,130,
-        1,0,0,0,135,131,1,0,0,0,135,132,1,0,0,0,136,21,1,0,0,0,14,25,34,
-        38,44,50,54,64,75,77,99,113,115,125,135
+        59,3,16,8,0,59,65,1,0,0,0,60,61,3,6,3,0,61,62,5,21,0,0,62,63,3,6,
+        3,0,63,65,1,0,0,0,64,40,1,0,0,0,64,46,1,0,0,0,64,52,1,0,0,0,64,56,
+        1,0,0,0,64,60,1,0,0,0,65,9,1,0,0,0,66,67,7,1,0,0,67,11,1,0,0,0,68,
+        69,7,2,0,0,69,13,1,0,0,0,70,79,3,4,2,0,71,79,5,31,0,0,72,73,7,3,
+        0,0,73,79,3,12,6,0,74,76,3,12,6,0,75,77,3,10,5,0,76,75,1,0,0,0,76,
+        77,1,0,0,0,77,79,1,0,0,0,78,70,1,0,0,0,78,71,1,0,0,0,78,72,1,0,0,
+        0,78,74,1,0,0,0,79,15,1,0,0,0,80,81,6,8,-1,0,81,101,3,14,7,0,82,
+        83,5,10,0,0,83,84,3,16,8,0,84,85,5,11,0,0,85,101,1,0,0,0,86,87,3,
+        14,7,0,87,88,5,12,0,0,88,89,3,14,7,0,89,101,1,0,0,0,90,91,3,14,7,
+        0,91,92,5,36,0,0,92,93,3,14,7,0,93,101,1,0,0,0,94,95,3,14,7,0,95,
+        96,5,36,0,0,96,97,3,14,7,0,97,98,5,36,0,0,98,99,3,14,7,0,99,101,
+        1,0,0,0,100,80,1,0,0,0,100,82,1,0,0,0,100,86,1,0,0,0,100,90,1,0,
+        0,0,100,94,1,0,0,0,101,116,1,0,0,0,102,103,10,7,0,0,103,104,7,4,
+        0,0,104,115,3,16,8,8,105,106,10,3,0,0,106,107,7,5,0,0,107,115,3,
+        16,8,4,108,109,10,2,0,0,109,110,5,3,0,0,110,115,3,16,8,3,111,112,
+        10,1,0,0,112,113,5,4,0,0,113,115,3,16,8,2,114,102,1,0,0,0,114,105,
+        1,0,0,0,114,108,1,0,0,0,114,111,1,0,0,0,115,118,1,0,0,0,116,114,
+        1,0,0,0,116,117,1,0,0,0,117,17,1,0,0,0,118,116,1,0,0,0,119,120,3,
+        6,3,0,120,121,5,19,0,0,121,126,3,20,10,0,122,123,5,8,0,0,123,125,
+        3,20,10,0,124,122,1,0,0,0,125,128,1,0,0,0,126,124,1,0,0,0,126,127,
+        1,0,0,0,127,129,1,0,0,0,128,126,1,0,0,0,129,130,5,20,0,0,130,19,
+        1,0,0,0,131,137,5,34,0,0,132,137,5,32,0,0,133,134,5,34,0,0,134,135,
+        7,5,0,0,135,137,5,32,0,0,136,131,1,0,0,0,136,132,1,0,0,0,136,133,
+        1,0,0,0,137,21,1,0,0,0,14,25,34,38,44,50,54,64,76,78,100,114,116,
+        126,136
     ]
 
 class ExprParser ( Parser ):
@@ -75,15 +76,16 @@ class ExprParser ( Parser ):
                      "']'", "'vs'", "'$'", "'\\u00A3'", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "'..'" ]
+                     "<INVALID>", "<INVALID>", "'..'" ]
 
     symbolicNames = [ "<INVALID>", "SINGLE_COMMENT", "MULTILINE_COMMENT", 
                       "AND", "THEN", "OR", "NOT", "EQ", "COMMA", "SEMI", 
                       "LPAREN", "RPAREN", "TO", "PLUS", "MINUS", "TIMES", 
                       "DIVIDE", "GREATER_THAN", "LESS_THAN", "LSQPAREN", 
-                      "RSQPAREN", "VERSUS", "DOLLAR", "POUND", "DAYS", "WEEKS", 
-                      "HOURS", "MINUTES", "SECONDS", "YEARS", "INT", "FLOAT", 
-                      "ID", "BRACKET_ID", "DOTS", "WS", "NL" ]
+                      "RSQPAREN", "VERSUS", "DOLLAR", "POUND", "DAYS", "BUSINESS_DAYS", 
+                      "WEEKS", "HOURS", "MINUTES", "SECONDS", "YEARS", "SLASH_DATE", 
+                      "INT", "FLOAT", "ID", "BRACKET_ID", "DOTS", "WS", 
+                      "NL" ]
 
     RULE_program = 0
     RULE_terminate = 1
@@ -126,18 +128,20 @@ class ExprParser ( Parser ):
     DOLLAR=22
     POUND=23
     DAYS=24
-    WEEKS=25
-    HOURS=26
-    MINUTES=27
-    SECONDS=28
-    YEARS=29
-    INT=30
-    FLOAT=31
-    ID=32
-    BRACKET_ID=33
-    DOTS=34
-    WS=35
-    NL=36
+    BUSINESS_DAYS=25
+    WEEKS=26
+    HOURS=27
+    MINUTES=28
+    SECONDS=29
+    YEARS=30
+    SLASH_DATE=31
+    INT=32
+    FLOAT=33
+    ID=34
+    BRACKET_ID=35
+    DOTS=36
+    WS=37
+    NL=38
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -196,7 +200,7 @@ class ExprParser ( Parser ):
             self.state = 25
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while ((_la) & ~0x3f) == 0 and ((1 << _la) & 16118711296) != 0:
+            while ((_la) & ~0x3f) == 0 and ((1 << _la) & 66584577024) != 0:
                 self.state = 22
                 localctx.statements = self.stat()
                 self.state = 27
@@ -400,13 +404,13 @@ class ExprParser ( Parser ):
             self.state = 38
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [32]:
+            if token in [34]:
                 localctx = ExprParser.RawIdContext(self, localctx)
                 self.enterOuterAlt(localctx, 1)
                 self.state = 36
                 self.match(ExprParser.ID)
                 pass
-            elif token in [33]:
+            elif token in [35]:
                 localctx = ExprParser.BracketIdContext(self, localctx)
                 self.enterOuterAlt(localctx, 2)
                 self.state = 37
@@ -579,17 +583,17 @@ class ExprParser ( Parser ):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a ExprParser.StatContext
             super().__init__(parser)
-            self.lhs = None # ExprContext
-            self.rhs = None # ExprContext
+            self.lhs = None # BasicIdContext
+            self.rhs = None # BasicIdContext
             self.copyFrom(ctx)
 
         def VERSUS(self):
             return self.getToken(ExprParser.VERSUS, 0)
-        def expr(self, i:int=None):
+        def basicId(self, i:int=None):
             if i is None:
-                return self.getTypedRuleContexts(ExprParser.ExprContext)
+                return self.getTypedRuleContexts(ExprParser.BasicIdContext)
             else:
-                return self.getTypedRuleContext(ExprParser.ExprContext,i)
+                return self.getTypedRuleContext(ExprParser.BasicIdContext,i)
 
 
         def enterRule(self, listener:ParseTreeListener):
@@ -691,11 +695,11 @@ class ExprParser ( Parser ):
                 localctx = ExprParser.VersusContext(self, localctx)
                 self.enterOuterAlt(localctx, 5)
                 self.state = 60
-                localctx.lhs = self.expr(0)
+                localctx.lhs = self.basicId()
                 self.state = 61
                 self.match(ExprParser.VERSUS)
                 self.state = 62
-                localctx.rhs = self.expr(0)
+                localctx.rhs = self.basicId()
                 pass
 
 
@@ -733,6 +737,9 @@ class ExprParser ( Parser ):
         def SECONDS(self):
             return self.getToken(ExprParser.SECONDS, 0)
 
+        def BUSINESS_DAYS(self):
+            return self.getToken(ExprParser.BUSINESS_DAYS, 0)
+
         def getRuleIndex(self):
             return ExprParser.RULE_unit
 
@@ -762,7 +769,7 @@ class ExprParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 66
             _la = self._input.LA(1)
-            if not(((_la) & ~0x3f) == 0 and ((1 << _la) & 1056964608) != 0):
+            if not(((_la) & ~0x3f) == 0 and ((1 << _la) & 2130706432) != 0):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
@@ -818,7 +825,7 @@ class ExprParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 68
             _la = self._input.LA(1)
-            if not(_la==30 or _la==31):
+            if not(_la==32 or _la==33):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
@@ -847,6 +854,30 @@ class ExprParser ( Parser ):
         def copyFrom(self, ctx:ParserRuleContext):
             super().copyFrom(ctx)
 
+
+
+    class DateContext(SimpleExprContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a ExprParser.SimpleExprContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def SLASH_DATE(self):
+            return self.getToken(ExprParser.SLASH_DATE, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterDate" ):
+                listener.enterDate(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitDate" ):
+                listener.exitDate(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDate" ):
+                return visitor.visitDate(self)
+            else:
+                return visitor.visitChildren(self)
 
 
     class IdentContext(SimpleExprContext):
@@ -942,19 +973,25 @@ class ExprParser ( Parser ):
         self.enterRule(localctx, 14, self.RULE_simpleExpr)
         self._la = 0 # Token type
         try:
-            self.state = 77
+            self.state = 78
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [32, 33]:
+            if token in [34, 35]:
                 localctx = ExprParser.IdentContext(self, localctx)
                 self.enterOuterAlt(localctx, 1)
                 self.state = 70
                 self.id_()
                 pass
-            elif token in [22, 23]:
-                localctx = ExprParser.CurrencyValueContext(self, localctx)
+            elif token in [31]:
+                localctx = ExprParser.DateContext(self, localctx)
                 self.enterOuterAlt(localctx, 2)
                 self.state = 71
+                self.match(ExprParser.SLASH_DATE)
+                pass
+            elif token in [22, 23]:
+                localctx = ExprParser.CurrencyValueContext(self, localctx)
+                self.enterOuterAlt(localctx, 3)
+                self.state = 72
                 localctx.symbol = self._input.LT(1)
                 _la = self._input.LA(1)
                 if not(_la==22 or _la==23):
@@ -962,19 +999,19 @@ class ExprParser ( Parser ):
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
-                self.state = 72
+                self.state = 73
                 localctx.amount = self.numericLiteral()
                 pass
-            elif token in [30, 31]:
+            elif token in [32, 33]:
                 localctx = ExprParser.ValueContext(self, localctx)
-                self.enterOuterAlt(localctx, 3)
-                self.state = 73
+                self.enterOuterAlt(localctx, 4)
+                self.state = 74
                 localctx.value = self.numericLiteral()
-                self.state = 75
+                self.state = 76
                 self._errHandler.sync(self)
                 la_ = self._interp.adaptivePredict(self._input,7,self._ctx)
                 if la_ == 1:
-                    self.state = 74
+                    self.state = 75
                     localctx.valueUnit = self.unit()
 
 
@@ -1153,7 +1190,7 @@ class ExprParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 99
+            self.state = 100
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,9,self._ctx)
             if la_ == 1:
@@ -1161,7 +1198,7 @@ class ExprParser ( Parser ):
                 self._ctx = localctx
                 _prevctx = localctx
 
-                self.state = 80
+                self.state = 81
                 self.simpleExpr()
                 pass
 
@@ -1169,11 +1206,11 @@ class ExprParser ( Parser ):
                 localctx = ExprParser.ParensContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
-                self.state = 81
-                self.match(ExprParser.LPAREN)
                 self.state = 82
-                self.expr(0)
+                self.match(ExprParser.LPAREN)
                 self.state = 83
+                self.expr(0)
+                self.state = 84
                 self.match(ExprParser.RPAREN)
                 pass
 
@@ -1181,11 +1218,11 @@ class ExprParser ( Parser ):
                 localctx = ExprParser.RangeContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
-                self.state = 85
-                localctx.bottom = self.simpleExpr()
                 self.state = 86
-                self.match(ExprParser.TO)
+                localctx.bottom = self.simpleExpr()
                 self.state = 87
+                self.match(ExprParser.TO)
+                self.state = 88
                 localctx.top = self.simpleExpr()
                 pass
 
@@ -1193,11 +1230,11 @@ class ExprParser ( Parser ):
                 localctx = ExprParser.RangeContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
-                self.state = 89
-                localctx.bottom = self.simpleExpr()
                 self.state = 90
-                self.match(ExprParser.DOTS)
+                localctx.bottom = self.simpleExpr()
                 self.state = 91
+                self.match(ExprParser.DOTS)
+                self.state = 92
                 localctx.top = self.simpleExpr()
                 pass
 
@@ -1205,21 +1242,21 @@ class ExprParser ( Parser ):
                 localctx = ExprParser.RangeContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
-                self.state = 93
-                localctx.bottom = self.simpleExpr()
                 self.state = 94
-                self.match(ExprParser.DOTS)
+                localctx.bottom = self.simpleExpr()
                 self.state = 95
-                localctx.mid = self.simpleExpr()
-                self.state = 96
                 self.match(ExprParser.DOTS)
+                self.state = 96
+                localctx.mid = self.simpleExpr()
                 self.state = 97
+                self.match(ExprParser.DOTS)
+                self.state = 98
                 localctx.top = self.simpleExpr()
                 pass
 
 
             self._ctx.stop = self._input.LT(-1)
-            self.state = 115
+            self.state = 116
             self._errHandler.sync(self)
             _alt = self._interp.adaptivePredict(self._input,11,self._ctx)
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -1227,18 +1264,18 @@ class ExprParser ( Parser ):
                     if self._parseListeners is not None:
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
-                    self.state = 113
+                    self.state = 114
                     self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,10,self._ctx)
                     if la_ == 1:
                         localctx = ExprParser.BinopContext(self, ExprParser.ExprContext(self, _parentctx, _parentState))
                         localctx.lhs = _prevctx
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 101
+                        self.state = 102
                         if not self.precpred(self._ctx, 7):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 7)")
-                        self.state = 102
+                        self.state = 103
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not(_la==15 or _la==16):
@@ -1246,7 +1283,7 @@ class ExprParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 103
+                        self.state = 104
                         localctx.rhs = self.expr(8)
                         pass
 
@@ -1254,11 +1291,11 @@ class ExprParser ( Parser ):
                         localctx = ExprParser.BinopContext(self, ExprParser.ExprContext(self, _parentctx, _parentState))
                         localctx.lhs = _prevctx
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 104
+                        self.state = 105
                         if not self.precpred(self._ctx, 3):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 3)")
-                        self.state = 105
+                        self.state = 106
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not(_la==13 or _la==14):
@@ -1266,7 +1303,7 @@ class ExprParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 106
+                        self.state = 107
                         localctx.rhs = self.expr(4)
                         pass
 
@@ -1274,13 +1311,13 @@ class ExprParser ( Parser ):
                         localctx = ExprParser.BinopContext(self, ExprParser.ExprContext(self, _parentctx, _parentState))
                         localctx.lhs = _prevctx
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 107
+                        self.state = 108
                         if not self.precpred(self._ctx, 2):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 2)")
-                        self.state = 108
-                        localctx.op = self.match(ExprParser.AND)
                         self.state = 109
+                        localctx.op = self.match(ExprParser.AND)
+                        self.state = 110
                         localctx.rhs = self.expr(3)
                         pass
 
@@ -1288,18 +1325,18 @@ class ExprParser ( Parser ):
                         localctx = ExprParser.BinopContext(self, ExprParser.ExprContext(self, _parentctx, _parentState))
                         localctx.lhs = _prevctx
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 110
+                        self.state = 111
                         if not self.precpred(self._ctx, 1):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 1)")
-                        self.state = 111
-                        localctx.op = self.match(ExprParser.THEN)
                         self.state = 112
+                        localctx.op = self.match(ExprParser.THEN)
+                        self.state = 113
                         localctx.rhs = self.expr(2)
                         pass
 
              
-                self.state = 117
+                self.state = 118
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,11,self._ctx)
 
@@ -1372,27 +1409,27 @@ class ExprParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 118
-            localctx.name = self.basicId()
             self.state = 119
-            self.match(ExprParser.LSQPAREN)
+            localctx.name = self.basicId()
             self.state = 120
+            self.match(ExprParser.LSQPAREN)
+            self.state = 121
             localctx._sequenceIndex = self.sequenceIndex()
             localctx.args.append(localctx._sequenceIndex)
-            self.state = 125
+            self.state = 126
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==8:
-                self.state = 121
-                self.match(ExprParser.COMMA)
                 self.state = 122
+                self.match(ExprParser.COMMA)
+                self.state = 123
                 localctx._sequenceIndex = self.sequenceIndex()
                 localctx.args.append(localctx._sequenceIndex)
-                self.state = 127
+                self.state = 128
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 128
+            self.state = 129
             self.match(ExprParser.RSQPAREN)
         except RecognitionException as re:
             localctx.exception = re
@@ -1510,29 +1547,29 @@ class ExprParser ( Parser ):
         self.enterRule(localctx, 20, self.RULE_sequenceIndex)
         self._la = 0 # Token type
         try:
-            self.state = 135
+            self.state = 136
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,13,self._ctx)
             if la_ == 1:
                 localctx = ExprParser.SequenceIndexAtIdContext(self, localctx)
                 self.enterOuterAlt(localctx, 1)
-                self.state = 130
+                self.state = 131
                 localctx.seqId = self.match(ExprParser.ID)
                 pass
 
             elif la_ == 2:
                 localctx = ExprParser.SequenceIndexAbsoluteContext(self, localctx)
                 self.enterOuterAlt(localctx, 2)
-                self.state = 131
+                self.state = 132
                 localctx.seqIdx = self.match(ExprParser.INT)
                 pass
 
             elif la_ == 3:
                 localctx = ExprParser.SequenceIndexRelativeContext(self, localctx)
                 self.enterOuterAlt(localctx, 3)
-                self.state = 132
-                localctx.seqId = self.match(ExprParser.ID)
                 self.state = 133
+                localctx.seqId = self.match(ExprParser.ID)
+                self.state = 134
                 localctx.op = self._input.LT(1)
                 _la = self._input.LA(1)
                 if not(_la==13 or _la==14):
@@ -1540,7 +1577,7 @@ class ExprParser ( Parser ):
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
-                self.state = 134
+                self.state = 135
                 localctx.seqOffset = self.match(ExprParser.INT)
                 pass
 

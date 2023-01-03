@@ -2,7 +2,9 @@
 
 ## Language features
 
-- [ ] Sequential logic
+- [ ] IDs with spaces in and overlapping with keyword names
+  - [ ] will require a more general parser
+  - [ ] 'runtime' will have to figure out which tokens are operators vs. identifiers
 - [ ] Events with chance
 - [ ] Distributions: triangle, normal
 - [ ] Task graphs
@@ -14,6 +16,9 @@
 - [x] Unit algebra (dollars/time)
 - [x] Currency
   - [ ] (currency conversion?!?)
+- [ ] Dates?
+  - [ ] Business days?
+- [ ] Min, max
 
 ## Analysis outputs
 
@@ -29,11 +34,9 @@
 
 ## Other potential ideas
 
-- [ ] Min, max
+- [ ] Sequential logic
 - [ ] Other functions
 - [ ] Function definitions
-- [ ] Dates?
-  - [ ] Business days?
 
 ## Bugs
 

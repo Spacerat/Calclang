@@ -116,7 +116,6 @@ class CalcAstVisitor(ExprParserVisitor):
         return Id(ctx.getText()[1:-1])
 
     def visitRange(self, ctx: ExprParser.RangeContext):
-
         return Range(
             bottom=self.visit(ctx.bottom),
             mid=self.visit(ctx.mid) if ctx.mid else None,
@@ -136,3 +135,6 @@ class CalcAstVisitor(ExprParserVisitor):
             return result[0]
 
         return result
+
+    def visitDate(self, ctx: ExprParser.DateContext):
+        return super().visitDate(ctx)

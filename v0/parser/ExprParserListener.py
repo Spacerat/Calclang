@@ -125,6 +125,15 @@ class ExprParserListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by ExprParser#date.
+    def enterDate(self, ctx:ExprParser.DateContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#date.
+    def exitDate(self, ctx:ExprParser.DateContext):
+        pass
+
+
     # Enter a parse tree produced by ExprParser#currencyValue.
     def enterCurrencyValue(self, ctx:ExprParser.CurrencyValueContext):
         pass
