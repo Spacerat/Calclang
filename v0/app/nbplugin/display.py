@@ -1,4 +1,4 @@
-from .analysis import (
+from ..language.analysis import (
     ValueOutput,
     MeasureOutput,
     DistributionOutput,

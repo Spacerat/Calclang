@@ -1,4 +1,4 @@
-from language import run, ExecContext
+from .run import run, ExecContext
 import locale
 from IPython.core.magic import Magics, magics_class, line_cell_magic, line_magic
 from IPython.core.getipython import get_ipython
