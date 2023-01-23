@@ -1,6 +1,6 @@
 import sys
 from language.parse import parse_file
-from language.analysis import display
+from language.analysis_old import display
 from pprint import pprint
 
 
