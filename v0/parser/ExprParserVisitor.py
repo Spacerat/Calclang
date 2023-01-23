@@ -39,11 +39,6 @@ class ExprParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#sequenceAssignment.
-    def visitSequenceAssignment(self, ctx:ExprParser.SequenceAssignmentContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by ExprParser#statement.
     def visitStatement(self, ctx:ExprParser.StatementContext):
         return self.visitChildren(ctx)
@@ -106,26 +101,6 @@ class ExprParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by ExprParser#binop.
     def visitBinop(self, ctx:ExprParser.BinopContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ExprParser#sequenceId.
-    def visitSequenceId(self, ctx:ExprParser.SequenceIdContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ExprParser#sequenceIndexAtId.
-    def visitSequenceIndexAtId(self, ctx:ExprParser.SequenceIndexAtIdContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ExprParser#sequenceIndexAbsolute.
-    def visitSequenceIndexAbsolute(self, ctx:ExprParser.SequenceIndexAbsoluteContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by ExprParser#sequenceIndexRelative.
-    def visitSequenceIndexRelative(self, ctx:ExprParser.SequenceIndexRelativeContext):
         return self.visitChildren(ctx)
 
 

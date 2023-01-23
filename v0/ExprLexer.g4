@@ -21,7 +21,7 @@ GREATER_THAN: '>';
 LESS_THAN: '<';
 LSQPAREN: '[';
 RSQPAREN: ']';
-VERSUS: 'vs';
+VERSUS: '~';
 
 DOLLAR: '$';
 POUND: '£';
@@ -41,7 +41,9 @@ SLASH_DATE:
 
 INT: (MINUS? [1-9][0-9]* | '0');
 FLOAT: INT [.] INT;
-ID: [a-zA-Z_][a-zA-Z_0-9]*;
+
+ID: [a-zA-Z_][a-zA-Z_0-9]* (' '+ [a-zA-Z_][a-zA-Z_0-9]*)*;
+
 BRACKET_ID: '\'' (~['])* '\'';
 
 DOTS: '..';

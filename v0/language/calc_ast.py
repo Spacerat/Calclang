@@ -1,23 +1,32 @@
+from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Dict, Union, List, Optional, Iterator, Literal, Tuple, Optional
+from typing import (
+    Dict,
+    Union,
+    List,
+    Optional,
+    Iterator,
+    Literal,
+    Tuple,
+    Optional,
+    Generic,
+    TypeVar,
+)
+from typing_extensions import Protocol
 import numpy as np
 import networkx as nx
 from .units import units
-from pint import Quantity
 
+from .pint_stubs import Quantity, Unit
 
 SIM_SIZE = 100_000
 
 
-Numeric = Quantity
-
-
 @dataclass
 class ExecContext:
-    values: Dict[str, Optional[Numeric]] = field(default_factory=dict)
+    values: Dict[str, Optional[Quantity]] = field(default_factory=dict)
     graph: nx.DiGraph = field(default_factory=nx.DiGraph)
     assignments: Dict[str, "Assignment"] = field(default_factory=dict)
-    # sequenceAssignments: Dic
 
     indexValues: List[int] = field(default_factory=list)
 
@@ -96,7 +105,7 @@ class ExecContext:
 @dataclass
 class StatementResult:
     text: str
-    value: Optional[Numeric]
+    value: Optional[Quantity]
 
     def name(self):
         return self.text
@@ -106,32 +115,39 @@ class StatementResult:
 class AssignmentResult:
     text: str
     target: str
-    value: Optional[Numeric]
+    value: Optional[Quantity]
 
     def name(self):
         return self.target
 
 
+Operator = Literal[">"] | Literal["<"]
+
+
 @dataclass
 class InequalityResult:
     text: str
-    lhs: Optional[Numeric]
-    rhs: Optional[Numeric]
-    op: Literal[">"] | Literal["<"]
+    lhs: Optional[Quantity]
+    rhs: Optional[Quantity]
+    op: Operator
 
-    def name(self):
+    def names(self):
         # HACK
         # should get text from children directly instead
-        return (self.text.split("<") if self.op == "<" else self.text.split(">"))[
-            0
-        ].strip()
+        return self.text.split("<") if self.op == "<" else self.text.split(">")
+
+    def lhs_name(self):
+        return self.names()[0].strip()
+
+    def rhs_name(self):
+        return self.names()[1].strip()
 
 
 @dataclass
 class VersusResult:
     text: str
-    lhs: Optional[Numeric]
-    rhs: Optional[Numeric]
+    lhs: Optional[Quantity]
+    rhs: Optional[Quantity]
 
     def name(self):
         return self.text
@@ -196,21 +212,6 @@ class SequenceId:
 class Assignment:
     text: str
     target: Id
-    expression: "Expression"
-
-    def get_deps(self, ctx: ExecContext) -> List[str]:
-        return self.expression.get_deps(ctx)
-
-    def execute(self, ctx: "ExecContext"):
-        return AssignmentResult(
-            self.text, self.target.name, self.expression.execute(ctx)
-        )
-
-
-@dataclass
-class SequenceAssignment:
-    text: str
-    target: SequenceId
     expression: "Expression"
 
     def get_deps(self, ctx: ExecContext) -> List[str]:

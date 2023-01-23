@@ -8,11 +8,6 @@ from .calc_ast import (
     Program,
     Statement,
     Assignment,
-    SequenceAssignment,
-    SequenceIndexAbsolute,
-    SequenceIndexRelative,
-    SequenceIndexId,
-    SequenceId,
     Unknown,
     Versus,
     Range,
@@ -53,27 +48,6 @@ class CalcAstVisitor(ExprParserVisitor):
             self.extract_original_text(ctx),
             self.visit(ctx.target),
             self.visit(ctx.expression),
-        )
-
-    def visitSequenceAssignment(self, ctx: ExprParser.SequenceAssignmentContext):
-        return SequenceAssignment(
-            self.extract_original_text(ctx),
-            self.visit(ctx.target),
-            self.visit(ctx.expression),
-        )
-
-    def visitSequenceId(self, ctx: ExprParser.SequenceIdContext):
-        return SequenceId(self.visit(ctx.name), [self.visit(x) for x in ctx.args])
-
-    def visitSequenceIndexAbsolute(self, ctx: ExprParser.SequenceIndexAbsoluteContext):
-        return SequenceIndexAbsolute(int(ctx.seqIdx.text))
-
-    def visitSequenceIndexAtId(self, ctx: ExprParser.SequenceIndexAtIdContext):
-        return SequenceIndexId(ctx.seqId.text)
-
-    def visitSequenceIndexRelative(self, ctx: ExprParser.SequenceIndexRelativeContext):
-        return SequenceIndexRelative(
-            name=ctx.seqId.text, op=ctx.op.text, offset=int(ctx.seqOffset.text)
         )
 
     def visitInequality(self, ctx: ExprParser.InequalityContext):

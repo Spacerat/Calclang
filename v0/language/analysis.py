@@ -1,199 +1,299 @@
 from .calc_ast import (
-    ProgramResults,
     AssignmentResult,
     StatementResult,
     InequalityResult,
-    VersusResult,
+    AnyResult,
+    Operator,
 )
-import seaborn as sns
-import matplotlib.pyplot as plt
 import numpy as np
-import babel.numbers
-
-from IPython.display import display as ipdisplay, Markdown
-
-
-def display(results: ProgramResults):
-    result = results.last_result
-    if not result:
-        return
-
-    if isinstance(result, (StatementResult, AssignmentResult)):
-        display_basic_result(result)
-
-    elif isinstance(result, InequalityResult):
-        display_inequality_result(result)
-
-    elif isinstance(result, VersusResult):
-        display_versus_result(result)
+from typing import List, Literal, Union, cast
+from .pint_stubs import Quantity
+from pydantic.dataclasses import dataclass
+from pydantic import BaseModel
 
 
-def display_inequality_result(result: InequalityResult):
-    lhs = result.lhs
-    rhs = result.rhs
-    op = result.op
-    if isinstance(lhs.m, (int, float)) and isinstance(rhs.m, np.ndarray):
-        lhs, rhs = rhs, lhs
+number = Union[float, int]
 
-    if isinstance(lhs.m, np.ndarray) and isinstance(rhs.m, np.ndarray):
-        print("Inequalities between distributions not yet supported")
 
-    elif isinstance(lhs.m, (int, float)) and isinstance(rhs.m, (int, float)):
-        if op == ">":
-            statement = "is" if lhs > rhs else "is not"
-            print(f"{lhs} {statement} greater than {rhs}")
-        if op == "<":
-            statement = "is" if lhs < rhs else "is not"
-            print(f"{lhs} {statement} less than {rhs}")
+@dataclass(frozen=True)
+class ValueOutput:
+    value: int | float
+    unit: str
+    name: str | None = None
 
-    elif isinstance(lhs.m, np.ndarray) and isinstance(rhs.m, (int, float)):
-        fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 
-        greater = op == ">"
-        name = result.name()
+@dataclass(frozen=True)
+class VarOutput:
+    name: str
+    unit: str
 
-        split_hist(
-            lhs.m, ax=ax1, threshold=rhs, greater=greater, cumulative=True, name=name
+
+@dataclass(frozen=True)
+class ValueInequalityOutput:
+    lhs: ValueOutput
+    rhs: ValueOutput
+    op: Operator
+    result: bool
+
+
+@dataclass(frozen=True)
+class MeasureOutput:
+    kind: Literal["median", "mean"]
+    value: int | float
+    unit: str
+
+
+@dataclass(frozen=True)
+class InequalityProbabilityOutput:
+    distribution: VarOutput
+    threshold: ValueOutput
+    op: Operator
+    probability: float
+
+
+@dataclass(frozen=True)
+class DistributionElement:
+    hist: List[float]
+    bins: List[float]
+    label: str | None = None
+    color: str | None = None
+
+
+@dataclass(frozen=True)
+class DistributionOutput:
+    title: str
+    distribution: VarOutput
+    dists: List[DistributionElement]
+
+
+Output = (
+    ValueOutput
+    | MeasureOutput
+    | DistributionOutput
+    | ValueInequalityOutput
+    | InequalityProbabilityOutput
+)
+
+OutputValue = Union[int, float, np.ndarray]
+
+
+class Analysis(BaseModel):
+    name: str
+    outputs: List[Output]
+
+
+@dataclass(frozen=True)
+class Analyses:
+    outputs: List[Analysis]
+
+
+def invert_inequality(op: Operator) -> Operator:
+    # NOTE: this would ideally support >= and <= but
+    # we don't support them for now
+    match op:
+        case "<":
+            return ">"
+        case ">":
+            return "<"
+
+
+def analyse_result(result: AnyResult | None) -> Analysis | None:
+    # XXX: we can't do this right until we get units right!
+    match result:
+        case StatementResult(_, value) | AssignmentResult(_, _, value):
+            if value is None:
+                return None
+
+            if isinstance(value.m, (float, int)):
+                return Analysis(
+                    name=result.name(),
+                    outputs=[
+                        ValueOutput(
+                            name=result.name(), value=value.m, unit=str(value.u)
+                        )
+                    ],
+                )
+
+            if isinstance(value.m, np.ndarray):
+                return Analysis(
+                    name=result.name(),
+                    outputs=make_distribution_analysis(value, result.name()),
+                )
+
+        case InequalityResult(text, lhs, rhs, op) as result:
+            if lhs is None or rhs is None:
+                return
+            lhs_name = result.lhs_name()
+            rhs_name = result.rhs_name()
+
+            if isinstance(lhs.m, (int, float)) and isinstance(rhs.m, np.ndarray):
+                lhs, rhs = rhs, lhs
+                lhs_name, rhs_name = rhs_name, lhs_name
+                op = invert_inequality(op)
+
+            if isinstance(lhs.m, np.ndarray) and isinstance(rhs.m, np.ndarray):
+                print("Inequalities between distributions not yet supported")
+
+            if isinstance(lhs.m, (int, float)) and isinstance(rhs.m, (int, float)):
+                return Analysis(
+                    name=text,
+                    outputs=[
+                        make_inequality_values_analysis(
+                            lhs, lhs_name, rhs, rhs_name, op
+                        ),
+                    ],
+                )
+
+            if isinstance(lhs.m, np.ndarray) and isinstance(rhs.m, (int, float)):
+                return Analysis(
+                    name=lhs_name,
+                    outputs=[
+                        make_inequality_probability_analysis(
+                            lhs, lhs_name, rhs, rhs_name, op
+                        ),
+                        make_inequality_distribution_analysis(lhs, lhs_name, rhs, op),
+                    ],
+                )
+
+
+def make_inequality_probability_analysis(
+    data: Quantity[np.ndarray],
+    data_name: str,
+    threshold: Quantity[number],
+    threshold_name: str,
+    op: Operator,
+) -> InequalityProbabilityOutput:
+    threshold_unit = str(data.u) if threshold.unitless else str(threshold.u)
+
+    if op == "<":
+        return InequalityProbabilityOutput(
+            distribution=VarOutput(name=data_name, unit=str(data.u)),
+            threshold=ValueOutput(
+                value=threshold.m, unit=threshold_unit, name=threshold_name
+            ),
+            op=op,
+            probability=np.mean(data.m < threshold.m, dtype=float),
+        )
+    if op == ">":
+        return InequalityProbabilityOutput(
+            distribution=VarOutput(name=data_name, unit=str(data.u)),
+            threshold=ValueOutput(
+                value=threshold.m, unit=threshold_unit, name=threshold_name
+            ),
+            op=op,
+            probability=np.mean(data.m > threshold.m, dtype=float),
         )
 
-        split_hist(
-            lhs.m, ax=ax2, threshold=rhs, greater=greater, cumulative=False, name=name
-        )
 
-        proba = np.mean(lhs.m > rhs if greater else lhs.m < rhs)
+def make_inequality_distribution_analysis(
+    data: Quantity[np.ndarray],
+    data_name: str,
+    threshold: Quantity[number],
+    op: Operator,
+):
+    threshold_unit = str(data.u) if threshold.unitless else str(threshold.u)
+    threhsold_name = f"{threshold.m:n} {threshold_unit}"
 
-        fig.suptitle(f"P ( {result.text} ) = {proba:.0%}")
-
-        human_text = result.text.replace("<", "under").replace(">", "over")
-
-        format_plots(ax1, ax2, name, lhs.u)
-
-        printmd(f"**Probability of '{human_text}'**: {proba:.2%}")
-        printmd(f"**Mean {name}**: {fmt_value(np.mean(lhs))}")
-        printmd(f"**Median {name}**: {fmt_value(np.median(lhs))}")
-
-        fig.tight_layout()
-        plt.show()
-
-
-def display_versus_result(result: VersusResult):
-    lhs = result.lhs
-    rhs = result.rhs
-
-    if isinstance(lhs.m, (int, float)) or isinstance(rhs.m, (int, float)):
-        print("Comparison to single numbers not supported")
-
-    g = sns.jointplot(y=lhs.m, x=rhs.m, kind="hex")
-    g.plot_joint(sns.regplot, scatter=False, color="red")
-    left_name, right_name = result.text.split(" vs ")
-    plt.xlabel(label(right_name, rhs.u))
-    plt.ylabel(label(left_name, lhs.u))
-
-
-def format_plots(ax1, ax2, name, unit=None):
-    ax1.grid()
-    ax1.set_ylabel("Cumulative probability")
-
-    ax2.set_ylabel("Probability density")
-    ax2.set_yticklabels([])
-
-    ax2.set_xlabel(label(name, unit))
-
-
-def label(name, unit=None):
-    if unit and str(unit) != "dimensionless":
-        return f"{name} ({unit})"
-    else:
-        return name
-
-
-def display_basic_result(result: StatementResult | AssignmentResult):
-    value = result.value
-    title = result.name()
-
-    if isinstance(value.m, (int, float)):
-        print(f"{title}: {result.value}")
-
-    elif isinstance(value.m, np.ndarray):
-
-        fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
-        fig.suptitle(title)
-
-        sns.histplot(value.m, stat="percent", cumulative=True, ax=ax1)
-
-        sns.histplot(value.m, stat="percent", ax=ax2)
-
-        format_plots(ax1, ax2, result.name(), value.u)
-
-        fig.tight_layout()
-
-        printmd(f"**Mean {result.name()}**: {fmt_value(np.mean(value))}")
-        printmd(f"**Median {result.name()}**: {fmt_value(np.median(value))}")
-
-        plt.show()
-    else:
-        print(f"Unknown type {value.m.__class__}")
-
-
-def fmt_value(value):
-    if value.dimensionless:
-        return f"{value.m:n}"
-
-    if value.u in ("USD", "GBP"):
-        return babel.numbers.format_currency(value.m, str(value.u), locale="EN_US")
-
-    return f"{value:n}"
-
-
-def split_hist(data, *, ax, threshold, greater, cumulative, name):
-
-    hist, bins = np.histogram(data, bins="auto", density=True)
-
-    if cumulative:
-        hist = np.cumsum(hist)
-        hist = 100 * hist / max(hist)
+    distribution = VarOutput(name=data_name, unit=str(data.u))
+    hist, bins = np.histogram(data.m, bins="auto", density=True)
+    hist = cumulative(hist)
 
     lcol, rcol = "salmon", "chartreuse"
-    if not greater:
+    if op == "<":
         lcol, rcol = rcol, lcol
 
-    if threshold < min(data):
-        ax.hist(
-            bins[:-1],
-            bins,
-            weights=hist,
-            color=rcol,
-            label=f"{name} > {threshold.m}",
-        )
-    elif threshold > max(data):
-        ax.hist(
-            bins[:-1],
-            bins,
-            weights=hist,
-            color=lcol,
-            label=f"{name} < {threshold.m}",
-        )
-    else:
-        thresh_idx = np.argmax(bins > threshold)
-
-        ax.hist(
-            bins[: thresh_idx - 1],
-            bins[:thresh_idx],  # type: ignore
-            weights=hist[: thresh_idx - 1],
-            color=lcol,
-            label=f"{name} < {threshold.m}",
+    if threshold < min(data.m):
+        return DistributionOutput(
+            title="Cumulative distribution",
+            distribution=distribution,
+            dists=[
+                DistributionElement(
+                    hist=hist.tolist(),
+                    bins=bins.tolist(),
+                    label=f"{data_name} > {threhsold_name}",
+                    color=rcol,
+                ),
+            ],
         )
 
-        ax.hist(
-            bins[thresh_idx - 1 : -1],
-            bins[thresh_idx - 1 :],  # type: ignore
-            weights=hist[thresh_idx - 1 :],
-            color=rcol,
-            label=f"{name} > {threshold.m}",
+    if threshold > max(data.m):
+        return DistributionOutput(
+            title="Cumulative distribution",
+            distribution=distribution,
+            dists=[
+                DistributionElement(
+                    hist=hist.tolist(),
+                    bins=bins.tolist(),
+                    label=f"{data_name} < {threhsold_name}",
+                    color=lcol,
+                )
+            ],
         )
 
-    ax.legend()
+    thresh_idx = np.argmax(bins > threshold)
+
+    return DistributionOutput(
+        title="Cumulative distribution",
+        distribution=distribution,
+        dists=[
+            DistributionElement(
+                hist=hist[: thresh_idx - 1].tolist(),
+                bins=bins[:thresh_idx].tolist(),
+                label=f"{data_name} < {threhsold_name}",
+                color=lcol,
+            ),
+            DistributionElement(
+                hist=hist[thresh_idx - 1 :].tolist(),
+                bins=bins[thresh_idx - 1 :].tolist(),
+                label=f"{data_name} > {threhsold_name}",
+                color=rcol,
+            ),
+        ],
+    )
 
 
-def printmd(md: str):
-    ipdisplay(Markdown(md))
+def make_inequality_values_analysis(
+    lhs: Quantity[number],
+    lhs_name: str,
+    rhs: Quantity[number],
+    rhs_name: str,
+    op: Operator,
+) -> ValueInequalityOutput:
+
+    result = lhs < rhs if op == "<" else lhs > rhs
+
+    return ValueInequalityOutput(
+        lhs=ValueOutput(value=lhs.m, unit=str(lhs.u), name=str(lhs)),
+        rhs=ValueOutput(value=rhs.m, unit=str(rhs.u), name=str(rhs)),
+        op=op,
+        result=result,
+    )
+
+
+def cumulative(hist: np.ndarray):
+    hist = np.cumsum(hist)
+    hist = 100 * hist / max(hist)
+    return hist
+
+
+def make_distribution_analysis(
+    value: Quantity[np.ndarray], value_name: str
+) -> List[Output]:
+    unit = str(value.u)
+    hist, bins = np.histogram(value.m, bins="auto", density=True)
+    hist = cumulative(hist)
+
+    cumulative_output = DistributionOutput(
+        title="Cumulative distribution",
+        distribution=VarOutput(name=value_name, unit=unit),
+        dists=[DistributionElement(hist=hist.tolist(), bins=bins.tolist())],
+    )
+
+    mean = cast(Quantity[float], np.mean(value))
+    median = cast(Quantity[float], np.median(value))
+
+    return [
+        MeasureOutput(kind="mean", value=mean.m, unit=str(mean.u)),
+        MeasureOutput(kind="median", value=median.m, unit=str(median.u)),
+        cumulative_output,
+    ]

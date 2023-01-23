@@ -1,7 +1,7 @@
-scipy
-numpy
-seaborn
-networkx
-antlr4-python3-runtime
-pint
-babel
+numpy==1.24.1
+networkx==3.0
+antlr4-python3-runtime==4.11.1
+Pint==0.20.1
+fastapi>=0.68.0,<0.69.0
+pydantic>=1.8.0,<2.0.0
+uvicorn>=0.15.0,<0.16.0
