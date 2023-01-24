@@ -3,18 +3,21 @@ from fastapi import FastAPI
 from .language import parse_string, analyse_result, Analysis
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+import logging
+from typing import TypedDict
 
-
-class Result(BaseModel):
-    result: Analysis
+logger = logging.getLogger(__name__)
 
 
 app = FastAPI()
 
 origins = [
-    "https://calculator-spacerat.vercel.app/",
+    "https://calculator-spacerat.vercel.app",
+    "http://calculator-spacerat.vercel.app",
+    "http://localhost",
     "http://localhost:3000",
 ]
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -25,9 +28,16 @@ app.add_middleware(
 )
 
 
-@app.get("/compute/")
+class Result(TypedDict):
+    analysis: Analysis
+
+
+@app.get("/compute")
 def read_item(code: str) -> Result | None:
-    analysis = analyse_result(parse_string(code).execute().last_result)
-    if not analysis:
-        return None
-    return Result(result=analysis)
+    last_result = parse_string(code).execute().last_result
+    if last_result:
+        analysis = analyse_result(last_result)
+        if analysis:
+            return Result(analysis=analysis)
+
+    return None
