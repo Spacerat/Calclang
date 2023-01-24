@@ -20,12 +20,14 @@ class ValueOutput:
     value: int | float
     unit: str
     name: str | None = None
+    typename: Literal["value"] = "value"
 
 
 @dataclass(frozen=True)
 class VarOutput:
     name: str
     unit: str
+    typename: Literal["var"] = "var"
 
 
 @dataclass(frozen=True)
@@ -34,6 +36,7 @@ class ValueInequalityOutput:
     rhs: ValueOutput
     op: Operator
     result: bool
+    typename: Literal["inequality"] = "inequality"
 
 
 @dataclass(frozen=True)
@@ -41,6 +44,7 @@ class MeasureOutput:
     kind: Literal["median", "mean"]
     value: int | float
     unit: str
+    typename: Literal["measure"] = "measure"
 
 
 @dataclass(frozen=True)
@@ -49,6 +53,7 @@ class InequalityProbabilityOutput:
     threshold: ValueOutput
     op: Operator
     probability: float
+    typename: Literal["inequality_probability"] = "inequality_probability"
 
 
 @dataclass(frozen=True)
@@ -64,6 +69,7 @@ class DistributionOutput:
     title: str
     distribution: VarOutput
     dists: List[DistributionElement]
+    typename: Literal["distribution"] = "distribution"
 
 
 Output = (
