@@ -1,28 +1,47 @@
-import { Suspense } from "react";
+"use client";
+
+import { Suspense, useState } from "react";
 
 import styles from "./page.module.css";
 import Results from "./Results";
 
-export default async function Home({
+async function getResult(code: string): Promise<unknown> {
+  const params = new URLSearchParams({ code });
+  const url = "https://walrus-app-wpbvo.ondigitalocean.app/compute/?" + params;
+
+  const response = await fetch(url, { cache: "no-store" });
+
+  const json = await response.json();
+  return json;
+}
+
+export default function Home({
   searchParams,
 }: {
   searchParams: { code?: string };
 }) {
   const code = searchParams.code;
+  const [result, setResult] = useState<unknown>(null);
 
   return (
     <main className={styles.main}>
-      <form className={styles.section} method="get">
+      <form
+        className={styles.section}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (code) {
+            setResult(await getResult(code));
+          }
+          return false;
+        }}
+      >
         <div className={styles.sectionHead}>
           <button type="submit">Run</button>
         </div>
-        <textarea name="code">{code}</textarea>
+        <textarea name="code" defaultValue={code} />
       </form>
       <section className={styles.section}>
-        <Suspense fallback={"Loading"}>
-          {/* @ts-expect-error Server Component */}
-          <Results code={code} />
-        </Suspense>
+        <pre></pre>
       </section>
     </main>
   );
