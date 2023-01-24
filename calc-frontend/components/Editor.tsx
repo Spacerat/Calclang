@@ -8,12 +8,7 @@ import { AnalysisDisplay } from "./AnalysisDisplay";
 import styles from "./Editor.module.css";
 import buttonStyles from "./Button.module.css";
 
-// function downloadTextareaContent(code: HTMLTextAreaElement) {
-//   const blob = new Blob([textarea.value], { type: "text/plain" });
-//   const url = URL.createObjectURL(blob);
-//   const a = document.createElement("a");
-//   a.href = url;
-// }
+import { useSearchParams } from "next/navigation";
 
 const placeholder = `spendable = income - cost
 
@@ -40,6 +35,20 @@ type EditorProps = {
 export default function Editor({ initialResult, initialCode }: EditorProps) {
   const [code, setCode] = useState(initialCode);
   const [result, setResult] = useState<Analysis | null>(initialResult);
+
+  // This seems to be necessary to get the initial code to load
+  // in production. I'm not sure why.
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    (async () => {
+      const paramsCode = searchParams.get("code");
+      if (paramsCode && !initialCode) {
+        const result = await getResult(paramsCode);
+        setCode(paramsCode);
+        setResult(result);
+      }
+    })();
+  }, [initialCode, searchParams]);
 
   const onSubmit = useCallback(async () => {
     if (code) {
