@@ -15,6 +15,18 @@ import buttonStyles from "./Button.module.css";
 //   a.href = url;
 // }
 
+const placeholder = `spendable = income - cost
+
+income = $2000 to $2300
+
+cost = rent + utilities + food
+
+rent = $700
+utilities = $300 to $400
+food = ($100 to $150) * 4
+
+spendable > 600`;
+
 function stringDownloadLink(text: string, filename: string) {
   const blob = new Blob([text], { type: "text/plain" });
   return URL.createObjectURL(blob);
@@ -39,6 +51,8 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
     return false;
   }, [code]);
 
+  const downloadLink = stringDownloadLink(code, result?.name ?? "out");
+
   return (
     <main className={styles.main}>
       <form
@@ -50,17 +64,24 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
       >
         <div className={styles.sectionHead}>
           <h2>Sheet</h2>
-          <button className={buttonStyles.button} type="submit">
+          <button
+            className={`${buttonStyles.button} ${buttonStyles.runButton}`}
+            type="submit"
+          >
             Run
           </button>
 
-          <a href={stringDownloadLink(code, result?.name ?? "out")} download>
-            <button className={buttonStyles.button} type="button">
+          <a href={downloadLink} download>
+            <button
+              className={`${buttonStyles.button} ${buttonStyles.basicButton}`}
+              type="button"
+            >
               Download
             </button>
           </a>
         </div>
         <textarea
+          placeholder={placeholder}
           name="code"
           onChange={(e) => setCode(e.target.value)}
           onKeyDown={(e) => {

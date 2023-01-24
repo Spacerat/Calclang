@@ -8,6 +8,8 @@
   --deep-taupe: hsla(338, 17%, 41%, 1);
   --blue-jeans: hsla(204, 85%, 61%, 1);
   --blue-jeans-darker: hsla(204, 85%, 51%, 1);
+  --green-jeans: hsla(92, 85%, 61%, 1);
+  --green-jeans-darker: hsla(92, 85%, 51%, 1);
 
   /* --color-background:  rgb(255, 255, 255); */
   --color-primary: var(--pink);
@@ -18,6 +20,11 @@
   --color-border: var(--deep-taupe);
   --color-button: var(--blue-jeans);
   --color-button-darker: var(--blue-jeans-darker);
+
+  --color-button-run: var(--green-jeans);
+  --color-button-run-darker: var(--green-jeans-darker);
+
+  --page-width: 100vw;
 
 }
 

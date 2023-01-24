@@ -8,6 +8,9 @@ import { DistributionOutput } from "@/client";
 import { zip2, sliding, mid } from "./helpers";
 
 import { Chart, registerables } from "chart.js";
+
+import styles from "./Histogram.module.css";
+
 Chart.register(...registerables);
 
 export function Histogram({
@@ -37,17 +40,17 @@ export function Histogram({
   };
 
   return (
-    <div className="hist">
+    <div className={styles.hist}>
       <h3>{distribution.title}</h3>
-      {/* <pre>{JSON.stringify(datasets, null, 2)}</pre> */}
-      <Scatter
-        title={distribution.title}
-        options={{
-          responsive: true,
-          //   scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
-        }}
-        data={datasets}
-      />
+      <div className={styles.histSize}>
+        <Scatter
+          title={distribution.title}
+          options={{
+            responsive: true,
+          }}
+          data={datasets}
+        />
+      </div>
     </div>
   );
 }
