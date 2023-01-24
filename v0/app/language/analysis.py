@@ -44,6 +44,7 @@ class MeasureOutput:
     kind: Literal["median", "mean"]
     value: int | float
     unit: str
+    name: str
     typename: Literal["measure"] = "measure"
 
 
@@ -61,6 +62,7 @@ class DistributionElement:
     hist: List[float]
     bins: List[float]
     label: str | None = None
+    # TODO: replace label with name/unit
     color: str | None = None
 
 
@@ -191,6 +193,13 @@ def make_inequality_probability_analysis(
         )
 
 
+def fmt_unit(unit: str) -> str:
+    # TODO: remove when we send unit/name separately instead
+    if unit == "dimensionless":
+        return ""
+    return f" {unit}"
+
+
 def make_inequality_distribution_analysis(
     data: Quantity[np.ndarray],
     data_name: str,
@@ -198,7 +207,7 @@ def make_inequality_distribution_analysis(
     op: Operator,
 ):
     threshold_unit = str(data.u) if threshold.unitless else str(threshold.u)
-    threhsold_name = f"{threshold.m:n} {threshold_unit}"
+    threhsold_name = f"{threshold.m:n}{fmt_unit(threshold_unit)}"
 
     distribution = VarOutput(name=data_name, unit=str(data.u))
     hist, bins = np.histogram(data.m, bins="auto", density=True)
@@ -299,7 +308,9 @@ def make_distribution_analysis(
     median = cast(Quantity[float], np.median(value))
 
     return [
-        MeasureOutput(kind="mean", value=mean.m, unit=str(mean.u)),
-        MeasureOutput(kind="median", value=median.m, unit=str(median.u)),
+        MeasureOutput(kind="mean", value=mean.m, name=value_name, unit=str(mean.u)),
+        MeasureOutput(
+            kind="median", value=median.m, name=value_name, unit=str(median.u)
+        ),
         cumulative_output,
     ]

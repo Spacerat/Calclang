@@ -1,0 +1,10 @@
+.button {
+    padding: 0.25rem 1rem;
+    border-radius: 5px;
+    background-color: var(--color-button);
+    border: none;
+}
+  
+.button:active {
+    background-color: var(--color-button-darker);
+}

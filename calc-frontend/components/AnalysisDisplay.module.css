@@ -1,0 +1,27 @@
+.analysis {
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.analyses {
+    gap: 1rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.analyses > div {
+    background-color: var(--color-background-darker);
+    border-radius: 5px;
+    padding: 1rem;
+    border: thin var(--color-border) solid;
+}
+
+.half {
+    flex-basis: calc(50% - 0.5rem);
+}
+
+.full {
+    flex-basis: 100%;
+}

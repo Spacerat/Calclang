@@ -17,25 +17,19 @@
 .sectionHead {
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: 1rem;  
 }
 
-.sectionHead button {
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  background-color: rgb(var(--color-button));
-  border: 1px solid black;
- 
-}
-
-.sectionHead button:active {
-  background-color: rgb(var(--color-button-darker));
+.sectionHead > a {
+  text-decoration: none;
+  display: contents;
 }
 
 .section textarea {
   flex: 1;
-  padding: 0.5rem;
-  font-size: larger;
+  padding: 1rem;
+  font-size: x-large;
   border-radius: 5px;
+  background-color: var(--color-background);
 }
 

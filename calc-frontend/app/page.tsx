@@ -1,5 +1,5 @@
-import Editor from "./editor";
-import { getResult } from "./getResult";
+import Editor from "@/components/Editor";
+import { getResult } from "../api/getResult";
 
 type HomeProps = {
   searchParams?: { code?: string };
