@@ -1,7 +1,7 @@
 "use client";
 
 import { Analysis } from "@/api/getResult";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getResult } from "../api/getResult";
 import { AnalysisDisplay } from "./AnalysisDisplay";
 
@@ -52,6 +52,10 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
   }, [code]);
 
   const downloadLink = stringDownloadLink(code, result?.name ?? "out");
+
+  useEffect(() => {
+    console.log({ initialResult, initialCode });
+  }, [initialCode, initialResult]);
 
   return (
     <main className={styles.main}>
