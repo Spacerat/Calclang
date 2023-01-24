@@ -18,9 +18,9 @@ async function getResult(code: string): Promise<unknown> {
 export default function Home({
   searchParams,
 }: {
-  searchParams: { code?: string };
+  searchParams?: { code?: string };
 }) {
-  const [code, setCode] = useState(searchParams.code ?? "");
+  const [code, setCode] = useState(searchParams?.code ?? "");
   const [result, setResult] = useState<unknown>(null);
 
   return (
@@ -40,7 +40,6 @@ export default function Home({
         </div>
         <textarea
           name="code"
-          defaultValue={code}
           onChange={(e) => setCode(e.target.value)}
           value={code}
         />
