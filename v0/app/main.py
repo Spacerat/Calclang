@@ -32,7 +32,7 @@ class Result(TypedDict):
     analysis: Analysis
 
 
-@app.get("/compute")
+@app.get("/compute", response_model=Result)
 def read_item(code: str) -> Result | None:
     last_result = parse_string(code).execute().last_result
     if last_result:
