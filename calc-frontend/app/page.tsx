@@ -20,7 +20,7 @@ export default function Home({
 }: {
   searchParams: { code?: string };
 }) {
-  const code = searchParams.code;
+  const [code, setCode] = useState(searchParams.code ?? "");
   const [result, setResult] = useState<unknown>(null);
 
   return (
@@ -38,10 +38,15 @@ export default function Home({
         <div className={styles.sectionHead}>
           <button type="submit">Run</button>
         </div>
-        <textarea name="code" defaultValue={code} />
+        <textarea
+          name="code"
+          defaultValue={code}
+          onChange={(e) => setCode(e.target.value)}
+          value={code}
+        />
       </form>
       <section className={styles.section}>
-        <pre></pre>
+        <pre>{JSON.stringify(result, null, 2)}</pre>
       </section>
     </main>
   );
