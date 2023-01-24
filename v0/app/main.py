@@ -14,6 +14,8 @@ app = FastAPI()
 origins = [
     "https://calculator-spacerat.vercel.app",
     "http://calculator-spacerat.vercel.app",
+    "https://estimates.veryjoe.com/",
+    "http://estimates.veryjoe.com/",
     "http://localhost",
     "http://localhost:3000",
 ]
