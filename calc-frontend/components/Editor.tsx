@@ -9,18 +9,10 @@ import styles from "./Editor.module.css";
 import buttonStyles from "./Button.module.css";
 
 import { useSearchParams } from "next/navigation";
+import { Examples } from "./Examples";
+import { commandForOS } from "./ShortcutText";
 
-const placeholder = `spendable = income - cost
-
-income = $2000 to $2300
-
-cost = rent + utilities + food
-
-rent = $700
-utilities = $300 to $400
-food = ($100 to $150) * 4
-
-spendable > 600`;
+const placeholder = `Write your model here`;
 
 function stringDownloadLink(text: string, filename: string) {
   const blob = new Blob([text], { type: "text/plain" });
@@ -51,11 +43,15 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
   }, [initialCode, searchParams]);
 
   const onSubmit = useCallback(async () => {
+    const windowSearchParams = new URLSearchParams(window.location.search);
     if (code) {
-      const windowSearchParams = new URLSearchParams(window.location.search);
       windowSearchParams.set("code", code);
       window.history.replaceState({}, "", "?" + windowSearchParams.toString());
       setResult(await getResult(code));
+    } else {
+      windowSearchParams.delete("code");
+      window.history.replaceState({}, "", "?" + windowSearchParams.toString());
+      setResult(null);
     }
     return false;
   }, [code]);
@@ -81,7 +77,7 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
             className={`${buttonStyles.button} ${buttonStyles.runButton}`}
             type="submit"
           >
-            Run
+            Run {commandForOS("Enter")}
           </button>
 
           <a href={downloadLink} download>
@@ -98,7 +94,7 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
           name="code"
           onChange={(e) => setCode(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && e.metaKey) {
+            if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
               e.preventDefault();
               onSubmit();
             }
@@ -108,6 +104,7 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
       </form>
       <section className={styles.section}>
         <div>{result && <AnalysisDisplay analysis={result} />}</div>
+        <div>{!result && <Examples />}</div>
       </section>
     </main>
   );

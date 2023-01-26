@@ -74,12 +74,27 @@ class DistributionOutput:
     typename: Literal["distribution"] = "distribution"
 
 
+@dataclass
+class Percentile:
+    percentile: float
+    value: float
+
+
+@dataclass(frozen=True)
+class PercentilesOutput:
+    distribution: VarOutput
+    unit: str
+    percentiles: List[Percentile]
+    typename: Literal["percentiles"] = "percentiles"
+
+
 Output = (
     ValueOutput
     | MeasureOutput
     | DistributionOutput
     | ValueInequalityOutput
     | InequalityProbabilityOutput
+    | PercentilesOutput
 )
 
 OutputValue = Union[int, float, np.ndarray]
@@ -155,13 +170,27 @@ def analyse_result(result: AnyResult | None) -> Analysis | None:
             if isinstance(lhs.m, np.ndarray) and isinstance(rhs.m, (int, float)):
                 return Analysis(
                     name=lhs_name,
-                    outputs=[
-                        make_inequality_probability_analysis(
-                            lhs, lhs_name, rhs, rhs_name, op
-                        ),
-                        make_inequality_distribution_analysis(lhs, lhs_name, rhs, op),
-                    ],
+                    outputs=make_inequality_analysis(lhs, lhs_name, rhs, rhs_name, op),
                 )
+
+
+def make_inequality_analysis(
+    data: Quantity[np.ndarray],
+    data_name: str,
+    threshold: Quantity[number],
+    threshold_name: str,
+    op: Operator,
+) -> List[Output]:
+    return (
+        [
+            make_inequality_probability_analysis(
+                data, data_name, threshold, threshold_name, op
+            )
+        ]
+        + make_measure_analyses(data, data_name)
+        + [make_percentiles_analysis(data, data_name)]
+        + [make_inequality_distribution_analysis(data, data_name, threshold, op)]
+    )
 
 
 def make_inequality_probability_analysis(
@@ -298,12 +327,34 @@ def make_distribution_analysis(
     hist, bins = np.histogram(value.m, bins="auto", density=True)
     hist = cumulative(hist)
 
-    cumulative_output = DistributionOutput(
-        title="Cumulative distribution",
-        distribution=VarOutput(name=value_name, unit=unit),
-        dists=[DistributionElement(hist=hist.tolist(), bins=bins.tolist())],
+    return (
+        make_measure_analyses(value, value_name)
+        + [make_percentiles_analysis(value, value_name)]
+        + [
+            DistributionOutput(
+                title="Cumulative distribution",
+                distribution=VarOutput(name=value_name, unit=unit),
+                dists=[DistributionElement(hist=hist.tolist(), bins=bins.tolist())],
+            )
+        ]
     )
 
+
+def make_percentiles_analysis(value: Quantity[np.ndarray], value_name: str) -> Output:
+    unit = str(value.u)
+    percentile_locations = [5, 10, 25, 50, 75, 90, 95]
+    percentiles = np.percentile(value.m, percentile_locations)
+    return PercentilesOutput(
+        distribution=VarOutput(name=value_name, unit=unit),
+        unit=unit,
+        percentiles=[
+            Percentile(percentile=percentile, value=value)
+            for percentile, value in zip(percentile_locations, percentiles)
+        ],
+    )
+
+
+def make_measure_analyses(value: Quantity[np.ndarray], value_name: str) -> List[Output]:
     mean = cast(Quantity[float], np.mean(value))
     median = cast(Quantity[float], np.median(value))
 
@@ -312,5 +363,4 @@ def make_distribution_analysis(
         MeasureOutput(
             kind="median", value=median.m, name=value_name, unit=str(median.u)
         ),
-        cumulative_output,
     ]

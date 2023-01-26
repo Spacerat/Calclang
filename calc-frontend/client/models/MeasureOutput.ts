@@ -6,6 +6,7 @@ export type MeasureOutput = {
     kind: MeasureOutput.kind;
     value: number;
     unit: string;
+    name: string;
     typename?: MeasureOutput.typename;
 };
 

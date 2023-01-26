@@ -9,17 +9,14 @@ from typing import (
     Literal,
     Tuple,
     Optional,
-    Generic,
-    TypeVar,
 )
-from typing_extensions import Protocol
 import numpy as np
 import networkx as nx
 from .units import units
 
-from .pint_stubs import Quantity, Unit
+from .pint_stubs import Quantity
 
-SIM_SIZE = 100_000
+SIM_SIZE = 300_000
 
 
 @dataclass

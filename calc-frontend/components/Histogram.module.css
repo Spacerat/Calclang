@@ -3,16 +3,16 @@
     position: relative;
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 860px) {
     .histSize {
         width: 50vw;
         height: 25vw;
     }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 860px) {
     .histSize {
         width: 90vw;
-        height: 35vw;
+        height: 45vw;
     }
 }

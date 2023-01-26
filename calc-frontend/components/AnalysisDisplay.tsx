@@ -3,6 +3,7 @@ import {
   DistributionOutput,
   InequalityProbabilityOutput,
   MeasureOutput,
+  PercentilesOutput,
   ValueInequalityOutput,
   ValueOutput,
 } from "@/client";
@@ -23,11 +24,11 @@ function Value({ value, unit }: { value: number; unit: string }) {
     );
   }
   if (unit === "dimensionless") {
-    return <>{value.toString()}</>;
+    return <>{value.toFixed(2)}</>;
   }
   return (
     <>
-      {value} <em>{fmtUnit(unit)}</em>
+      {value.toFixed(2)} <em>{fmtUnit(unit)}</em>
     </>
   );
 }
@@ -129,6 +130,33 @@ export function AnalysisDisplay({ analysis }: { analysis: Analysis }) {
             <NameAndValue {...output.rhs} />
           </strong>
           : {output.result ? "true" : "false"}
+        </div>
+      );
+    }
+
+    if (output.typename == PercentilesOutput.typename.PERCENTILES) {
+      return (
+        <div key={`${analysis.name}-inequality`} className={styles.full}>
+          <table>
+            <thead>
+              <tr>
+                <th>This percent of the time</th>
+                {output.percentiles.map((p) => (
+                  <th key={p.percentile}>{p.percentile}%</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>The result is below...</td>
+                {output.percentiles.map((p) => (
+                  <td key={p.percentile}>
+                    <Value value={p.value} unit={output.unit} />
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
         </div>
       );
     }

@@ -12,6 +12,8 @@ export { DistributionOutput } from './models/DistributionOutput';
 export type { HTTPValidationError } from './models/HTTPValidationError';
 export { InequalityProbabilityOutput } from './models/InequalityProbabilityOutput';
 export { MeasureOutput } from './models/MeasureOutput';
+export type { Percentile } from './models/Percentile';
+export { PercentilesOutput } from './models/PercentilesOutput';
 export type { Result } from './models/Result';
 export type { ValidationError } from './models/ValidationError';
 export { ValueInequalityOutput } from './models/ValueInequalityOutput';
