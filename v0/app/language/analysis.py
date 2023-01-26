@@ -278,8 +278,8 @@ def make_inequality_values_analysis(
     result = lhs < rhs if op == "<" else lhs > rhs
 
     return ValueInequalityOutput(
-        lhs=ValueOutput(value=lhs.m, unit=str(lhs.u), name=str(lhs)),
-        rhs=ValueOutput(value=rhs.m, unit=str(rhs.u), name=str(rhs)),
+        lhs=ValueOutput(value=lhs.m, unit=str(lhs.u), name=lhs_name),
+        rhs=ValueOutput(value=rhs.m, unit=str(rhs.u), name=rhs_name),
         op=op,
         result=result,
     )
