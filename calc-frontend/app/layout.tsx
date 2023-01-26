@@ -21,7 +21,9 @@ export default function RootLayout({
       <body>
         <div className={`${styles.container} ${inter.className}`}>
           <header className={styles.header}>
-            <h1 className="text-3xl">Calculator-ish</h1>
+            <a href="/">
+              <h2>Calculator-ish</h2>
+            </a>
           </header>
           <div className={styles.page}>{children}</div>
         </div>
