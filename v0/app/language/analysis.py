@@ -41,7 +41,7 @@ class ValueInequalityOutput:
 
 @dataclass(frozen=True)
 class MeasureOutput:
-    kind: Literal["median", "mean"]
+    kind: Literal["median", "mean", "minimum", "maximum"]
     value: int | float
     unit: str
     name: str
@@ -356,11 +356,15 @@ def make_percentiles_analysis(value: Quantity[np.ndarray], value_name: str) -> O
 
 def make_measure_analyses(value: Quantity[np.ndarray], value_name: str) -> List[Output]:
     mean = cast(Quantity[float], np.mean(value))
-    median = cast(Quantity[float], np.median(value))
+    minimum = cast(Quantity[float], np.min(value))
+    maximum = cast(Quantity[float], np.max(value))
 
     return [
-        MeasureOutput(kind="mean", value=mean.m, name=value_name, unit=str(mean.u)),
         MeasureOutput(
-            kind="median", value=median.m, name=value_name, unit=str(median.u)
+            kind="minimum", value=minimum.m, name=value_name, unit=str(mean.u)
         ),
+        MeasureOutput(
+            kind="maximum", value=maximum.m, name=value_name, unit=str(mean.u)
+        ),
+        MeasureOutput(kind="mean", value=mean.m, name=value_name, unit=str(mean.u)),
     ]

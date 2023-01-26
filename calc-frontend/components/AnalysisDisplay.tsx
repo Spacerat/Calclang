@@ -71,20 +71,27 @@ function fmtProbability(probability: number) {
   return `${(probability * 100).toFixed(2)}%`;
 }
 
+function capFirst(str: string) {
+  return str[0].toUpperCase() + str.slice(1);
+}
+
 export function AnalysisDisplay({ analysis }: { analysis: Analysis }) {
   const outputs = analysis.outputs.map((output) => {
     if (output.typename == ValueOutput.typename.VALUE) {
       return (
-        <div key={`${analysis.name}-${output.name}`} className={styles.half}>
+        <div key={`${analysis.name}-${output.name}`} className={styles.small}>
           <strong>{output.name}</strong> = <Value {...output} />
         </div>
       );
     }
 
     if (output.typename == MeasureOutput.typename.MEASURE) {
+      const measureName =
+        output.kind == "mean" ? "Average (mean)" : capFirst(output.kind);
+
       return (
-        <div key={`${analysis.name}-${output.kind}`} className={styles.half}>
-          <strong>{output.kind}</strong>: <Value {...output} />
+        <div key={`${analysis.name}-${output.kind}`} className={styles.small}>
+          <strong>{measureName}</strong>: <Value {...output} />
         </div>
       );
     }

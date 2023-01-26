@@ -77,7 +77,7 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
             className={`${buttonStyles.button} ${buttonStyles.runButton}`}
             type="submit"
           >
-            Run {commandForOS("Enter")}
+            Run
           </button>
 
           <a href={downloadLink} download>
