@@ -13,7 +13,7 @@ utilities = $300 to $400
 expenses per month < 3000  
 `,
   `
-project time = frontend + backend / engineers
+project time = (frontend + backend) / engineers
 frontend = 2 to 3 weeks
 backend = 3 to 4 weeks
 engineers = 2 to 3
