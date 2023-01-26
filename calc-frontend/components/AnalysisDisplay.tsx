@@ -3,6 +3,7 @@ import {
   DistributionOutput,
   InequalityProbabilityOutput,
   MeasureOutput,
+  ValueInequalityOutput,
   ValueOutput,
 } from "@/client";
 
@@ -41,6 +42,26 @@ function Name({ name, unit }: { name: string; unit: string }) {
   return (
     <>
       {name} <em>{fmtUnit(unit)}</em>
+    </>
+  );
+}
+
+function NameAndValue({
+  name,
+  unit,
+  value,
+}: {
+  name?: string;
+  unit: string;
+  value: number;
+}) {
+  const valNode = <Value value={value} unit={unit} />;
+  if (!name) {
+    return valNode;
+  }
+  return (
+    <>
+      <strong>{name}</strong> ({valNode})
     </>
   );
 }
@@ -84,7 +105,7 @@ export function AnalysisDisplay({ analysis }: { analysis: Analysis }) {
     ) {
       return (
         <div
-          key={`${analysis.name}-${output.distribution.name}-inequality`}
+          key={`${analysis.name}-${output.distribution.name}-dist-inequality`}
           className={styles.full}
         >
           <strong>
@@ -96,6 +117,18 @@ export function AnalysisDisplay({ analysis }: { analysis: Analysis }) {
             )}
           </strong>
           : {fmtProbability(output.probability)}
+        </div>
+      );
+    }
+
+    if (output.typename == ValueInequalityOutput.typename.INEQUALITY) {
+      return (
+        <div key={`${analysis.name}-inequality`} className={styles.full}>
+          <strong>
+            <NameAndValue {...output.lhs} /> {output.op}{" "}
+            <NameAndValue {...output.rhs} />
+          </strong>
+          : {output.result ? "true" : "false"}
         </div>
       );
     }

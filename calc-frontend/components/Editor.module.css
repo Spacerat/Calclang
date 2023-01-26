@@ -31,5 +31,7 @@
   font-size: x-large;
   border-radius: 5px;
   background-color: var(--color-background);
+  min-height: 40vh;
+  resize: none;
 }
 
