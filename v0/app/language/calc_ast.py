@@ -13,6 +13,7 @@ from typing import (
 import numpy as np
 import networkx as nx
 from .units import units
+from case_insensitive_dict import CaseInsensitiveDict
 
 from .pint_stubs import Quantity
 
@@ -22,39 +23,15 @@ SIM_SIZE = 300_000
 """ Dictionary which treats all keys as lower clase"""
 
 
-class LowerDict(dict):
-    # TODO: better to preserve original case
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._lower_keys = {k.lower(): k for k in self.keys()}
-
-    def __getitem__(self, key):
-        return super().__getitem__(self._lower_keys[key.lower()])
-
-    def __setitem__(self, key, value):
-        super().__setitem__(self._lower_keys[key.lower()], value)
-
-    def __delitem__(self, key):
-        super().__delitem__(self._lower_keys[key.lower()])
-
-    def __contains__(self, key):
-        return super().__contains__(self._lower_keys[key.lower()])
-
-    def get(self, key, default=None):
-        return super().get(self._lower_keys[key.lower()], default)
-
-    def pop(self, key, default=None):
-        return super().pop(self._lower_keys[key.lower()], default)
-
-    def setdefault(self, key, default=None):
-        return super().setdefault(self._lower_keys[key.lower()], default)
-
-
 @dataclass
 class ExecContext:
-    values: Dict[str, Optional[Quantity]] = field(default_factory=LowerDict)
+    values: CaseInsensitiveDict[str, Optional[Quantity]] = field(
+        default_factory=CaseInsensitiveDict
+    )
     graph: nx.DiGraph = field(default_factory=nx.DiGraph)
-    assignments: Dict[str, "Assignment"] = field(default_factory=LowerDict)
+    assignments: CaseInsensitiveDict[str, "Assignment"] = field(
+        default_factory=CaseInsensitiveDict
+    )
 
     indexValues: List[int] = field(default_factory=list)
 
