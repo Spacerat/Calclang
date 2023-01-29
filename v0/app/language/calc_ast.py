@@ -19,11 +19,42 @@ from .pint_stubs import Quantity
 SIM_SIZE = 300_000
 
 
+""" Dictionary which treats all keys as lower clase"""
+
+
+class LowerDict(dict):
+    # TODO: better to preserve original case
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._lower_keys = {k.lower(): k for k in self.keys()}
+
+    def __getitem__(self, key):
+        return super().__getitem__(self._lower_keys[key.lower()])
+
+    def __setitem__(self, key, value):
+        super().__setitem__(self._lower_keys[key.lower()], value)
+
+    def __delitem__(self, key):
+        super().__delitem__(self._lower_keys[key.lower()])
+
+    def __contains__(self, key):
+        return super().__contains__(self._lower_keys[key.lower()])
+
+    def get(self, key, default=None):
+        return super().get(self._lower_keys[key.lower()], default)
+
+    def pop(self, key, default=None):
+        return super().pop(self._lower_keys[key.lower()], default)
+
+    def setdefault(self, key, default=None):
+        return super().setdefault(self._lower_keys[key.lower()], default)
+
+
 @dataclass
 class ExecContext:
-    values: Dict[str, Optional[Quantity]] = field(default_factory=dict)
+    values: Dict[str, Optional[Quantity]] = field(default_factory=LowerDict)
     graph: nx.DiGraph = field(default_factory=nx.DiGraph)
-    assignments: Dict[str, "Assignment"] = field(default_factory=dict)
+    assignments: Dict[str, "Assignment"] = field(default_factory=LowerDict)
 
     indexValues: List[int] = field(default_factory=list)
 
@@ -44,6 +75,7 @@ class ExecContext:
 
     # TODO: make immutable?
     def add_assignment(self, target: str, assignment: "Assignment"):
+        target = target.lower()
         # Do nothing if the assignment is unchanged
 
         curr_assignment = self.assignments.get(target)
@@ -62,13 +94,14 @@ class ExecContext:
             # replace this assignment's dependencies
 
             for successor in list(self.graph.successors(target)):
+                successor = successor.lower()
                 self.graph.remove_edge(target, successor)
 
         # Add the new assignment and all of its dependencies
 
         self.graph.add_node(target)
         for dep in deps:
-            self.graph.add_edge(target, dep)
+            self.graph.add_edge(target, dep.lower())
 
         self.assignments[target] = assignment
 
