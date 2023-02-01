@@ -147,7 +147,7 @@ export function AnalysisDisplay({ analysis }: { analysis: Analysis }) {
           <table>
             <thead>
               <tr>
-                <th>This percent of the time</th>
+                <th>X% probability...</th>
                 {output.percentiles.map((p) => (
                   <th key={p.percentile}>{p.percentile}%</th>
                 ))}
@@ -155,7 +155,7 @@ export function AnalysisDisplay({ analysis }: { analysis: Analysis }) {
             </thead>
             <tbody>
               <tr>
-                <td>The result is below...</td>
+                <td>the result is below...</td>
                 {output.percentiles.map((p) => (
                   <td key={p.percentile}>
                     <Value value={p.value} unit={output.unit} />
