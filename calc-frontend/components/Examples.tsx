@@ -32,7 +32,7 @@ export function Examples() {
     <div className={styles.analysis}>
       <h2>Examples</h2>
       <div className={styles.analyses}>
-        Perform date arithmetic
+        Do time math easily (seconds, minutes, days and weeks)
         <Example example="10 days + 3 weeks" />
         Break down calculations into simple steps
         <Example
@@ -50,7 +50,7 @@ export function Examples() {
         engineers = 2 to 3
         `}
         />
-        Estimate a probability that expenses will be less than $3000
+        Estimate a probability that monthly expenses will be less than $3000
         <Example
           example={`
         expenses per month = food per day * 30 + rent + utilities
