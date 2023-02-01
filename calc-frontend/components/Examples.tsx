@@ -38,8 +38,8 @@ export function Examples() {
               {example
                 .trim()
                 .split("\n")
-                .map((x) => (
-                  <p key={x}>{x}&nbsp;</p>
+                .map((x, i) => (
+                  <p key={i}>{x}&nbsp;</p>
                 ))}
             </div>
             <a href={exampleHref(example)}>Try it</a>
