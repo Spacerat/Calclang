@@ -33,7 +33,7 @@ export function Examples() {
       <h2>Examples</h2>
       <div className={styles.analyses}>
         Perform date arithmetic
-        <Example example="10 days + 3 weeks + 1 month" />
+        <Example example="10 days + 3 weeks" />
         Break down calculations into simple steps
         <Example
           example={`
