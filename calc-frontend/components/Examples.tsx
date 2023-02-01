@@ -1,3 +1,5 @@
+// TODO: can we get rid of 'window.location'?
+
 import styles from "./AnalysisDisplay.module.css";
 
 const examples = [
@@ -22,7 +24,7 @@ expenses per month < 3000
 ];
 
 function exampleHref(link: string) {
-  const windowSearchParams = new URLSearchParams(window.location.search);
+  const windowSearchParams = new URLSearchParams();
   windowSearchParams.set("code", link);
   return `?${windowSearchParams.toString()}`;
 }
