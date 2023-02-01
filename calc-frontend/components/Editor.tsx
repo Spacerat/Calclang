@@ -1,7 +1,7 @@
 "use client";
 
 import { Analysis } from "@/api/getResult";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { getResult } from "../api/getResult";
 import { AnalysisDisplay } from "./AnalysisDisplay";
 
@@ -9,6 +9,7 @@ import styles from "./Editor.module.css";
 import buttonStyles from "./Button.module.css";
 
 import { useSearchParams } from "next/navigation";
+import { useShortcutText } from "./useShortcutText";
 
 const placeholder = `Write your model here`;
 
@@ -56,9 +57,7 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
 
   const downloadLink = stringDownloadLink(code, result?.name ?? "out");
 
-  useEffect(() => {
-    console.log({ initialResult, initialCode });
-  }, [initialCode, initialResult]);
+  const command = useShortcutText("Enter");
 
   return (
     <main className={styles.main}>
@@ -75,7 +74,7 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
             className={`${buttonStyles.button} ${buttonStyles.runButton}`}
             type="submit"
           >
-            Run
+            Run {command}
           </button>
 
           <a href={downloadLink} download>
