@@ -9,8 +9,6 @@ import styles from "./Editor.module.css";
 import buttonStyles from "./Button.module.css";
 
 import { useSearchParams } from "next/navigation";
-import { Examples } from "./Examples";
-import { commandForOS } from "./ShortcutText";
 
 const placeholder = `Write your model here`;
 
@@ -72,7 +70,7 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
         }}
       >
         <div className={styles.sectionHead}>
-          <h2>Sheet</h2>
+          <h2>Calculations</h2>
           <button
             className={`${buttonStyles.button} ${buttonStyles.runButton}`}
             type="submit"
@@ -104,7 +102,7 @@ export default function Editor({ initialResult, initialCode }: EditorProps) {
       </form>
       <section className={styles.section}>
         <div>{result && <AnalysisDisplay analysis={result} />}</div>
-        <div>{!result && <Examples />}</div>
+        {/* <div>{!result && <Examples />}</div> */}
       </section>
     </main>
   );

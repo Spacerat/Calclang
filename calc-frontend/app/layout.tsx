@@ -1,5 +1,7 @@
 import "./globals.css";
 
+import Link from "next/link";
+
 import styles from "./layout.module.css";
 
 import { Inter } from "@next/font/google";
@@ -22,9 +24,15 @@ export default function RootLayout({
       <body>
         <div className={`${styles.container} ${inter.className}`}>
           <header className={styles.header}>
-            <a href="/">
-              <h2>Calculator-ish</h2>
-            </a>
+            <Link href="/">
+              <h2>Calculatish</h2>
+            </Link>
+            <div>
+              <Link href="/examples">Examples</Link>
+            </div>
+            <div>
+              <Link href="/about">About</Link>
+            </div>
           </header>
           <div className={styles.page}>{children}</div>
         </div>

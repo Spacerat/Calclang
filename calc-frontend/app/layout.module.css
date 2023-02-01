@@ -5,14 +5,23 @@
   min-height: 100vh;
 }
 
+.pageContainer {
+  max-width: 800px;
+  flex: 1;
+}
+
+.pageContainer h2 {
+    margin-top: 1.5rem;
+}
 
 .header {
   border-bottom: thin var(--color-border) solid;
   background-color: var(--color-primary);
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
+  align-items: center;
   padding: 0.5rem; 
+  gap: 2rem;
 }
 
 .header > a {
