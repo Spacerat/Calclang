@@ -363,8 +363,8 @@ def make_measure_analyses(value: Quantity[np.ndarray], value_name: str) -> List[
         MeasureOutput(
             kind="minimum", value=minimum.m, name=value_name, unit=str(mean.u)
         ),
+        MeasureOutput(kind="mean", value=mean.m, name=value_name, unit=str(mean.u)),
         MeasureOutput(
             kind="maximum", value=maximum.m, name=value_name, unit=str(mean.u)
         ),
-        MeasureOutput(kind="mean", value=mean.m, name=value_name, unit=str(mean.u)),
     ]
