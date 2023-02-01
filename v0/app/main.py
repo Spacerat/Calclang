@@ -16,6 +16,8 @@ origins = [
     "http://calculator-spacerat.vercel.app",
     "https://estimates.veryjoe.com",
     "http://estimates.veryjoe.com",
+    "https://calculatish.veryjoe.com",
+    "http://calculatish.veryjoe.com",
     "http://localhost",
     "http://localhost:3000",
 ]
