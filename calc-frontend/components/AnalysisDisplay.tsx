@@ -9,7 +9,7 @@ import {
 } from "@/client";
 
 import styles from "./AnalysisDisplay.module.css";
-import { Histogram } from "./Histogram";
+import Histogram from "./Histogram";
 
 function fmtUnit(unit: string) {
   return unit.replaceAll("**", "^").replaceAll("*", "·");

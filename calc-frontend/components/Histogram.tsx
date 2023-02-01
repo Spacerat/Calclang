@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useMemo } from "react";
+import React from "react";
 
 import { Scatter } from "react-chartjs-2";
 import { ChartData } from "chart.js";
@@ -13,11 +11,7 @@ import styles from "./Histogram.module.css";
 
 Chart.register(...registerables);
 
-export function Histogram({
-  distribution,
-}: {
-  distribution: DistributionOutput;
-}) {
+function Histogram({ distribution }: { distribution: DistributionOutput }) {
   const datasets: ChartData<"scatter"> = {
     datasets: distribution.dists.map((x) => {
       const data = zip2(sliding(x.bins, 2), x.hist).map(
@@ -54,3 +48,5 @@ export function Histogram({
     </div>
   );
 }
+
+export default React.memo(Histogram);
