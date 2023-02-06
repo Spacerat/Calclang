@@ -7,7 +7,7 @@ from .calc_ast import (
 )
 import numpy as np
 from typing import List, Literal, Union, cast
-from .pint_stubs import Quantity
+from .pint_stubs import Quantity, Unit
 from pydantic.dataclasses import dataclass
 from pydantic import BaseModel
 
@@ -120,6 +120,24 @@ def invert_inequality(op: Operator) -> Operator:
             return "<"
 
 
+def pluralize(unit: str):
+    # TODO: this is a hack
+    if unit.upper() == unit:
+        return unit
+    if unit.endswith("s"):
+        return unit
+    return unit + "s"
+
+
+def pluralize_unit(unit: Unit, *, value: number | np.ndarray | None = None) -> str:
+    # TODO: doesn't Pint have a way to do this?
+    if value is None or isinstance(value, np.ndarray):
+        return pluralize(str(unit))
+    if value == 1:
+        return str(unit)
+    return pluralize(str(unit))
+
+
 def analyse_result(result: AnyResult | None) -> Analysis | None:
     # XXX: we can't do this right until we get units right!
     match result:
@@ -132,7 +150,9 @@ def analyse_result(result: AnyResult | None) -> Analysis | None:
                     name=result.name(),
                     outputs=[
                         ValueOutput(
-                            name=result.name(), value=value.m, unit=str(value.u)
+                            name=result.name(),
+                            value=value.m,
+                            unit=pluralize_unit(value.u, value=value.m),
                         )
                     ],
                 )
@@ -204,7 +224,7 @@ def make_inequality_probability_analysis(
 
     if op == "<":
         return InequalityProbabilityOutput(
-            distribution=VarOutput(name=data_name, unit=str(data.u)),
+            distribution=VarOutput(name=data_name, unit=pluralize_unit(data.u)),
             threshold=ValueOutput(
                 value=threshold.m, unit=threshold_unit, name=threshold_name
             ),
@@ -213,7 +233,7 @@ def make_inequality_probability_analysis(
         )
     if op == ">":
         return InequalityProbabilityOutput(
-            distribution=VarOutput(name=data_name, unit=str(data.u)),
+            distribution=VarOutput(name=data_name, unit=pluralize_unit(data.u)),
             threshold=ValueOutput(
                 value=threshold.m, unit=threshold_unit, name=threshold_name
             ),
@@ -222,11 +242,11 @@ def make_inequality_probability_analysis(
         )
 
 
-def fmt_unit(unit: str) -> str:
+def fmt_unit(unit: str, *, value: np.ndarray | int | float) -> str:
     # TODO: remove when we send unit/name separately instead
     if unit == "dimensionless":
         return ""
-    return f" {unit}"
+    return f" {pluralize_unit(unit, value=value)}"
 
 
 def make_inequality_distribution_analysis(
@@ -236,9 +256,9 @@ def make_inequality_distribution_analysis(
     op: Operator,
 ):
     threshold_unit = str(data.u) if threshold.unitless else str(threshold.u)
-    threhsold_name = f"{threshold.m:n}{fmt_unit(threshold_unit)}"
+    threhsold_name = f"{threshold.m:n}{fmt_unit(threshold_unit, value=threshold.m)}"
 
-    distribution = VarOutput(name=data_name, unit=str(data.u))
+    distribution = VarOutput(name=data_name, unit=pluralize_unit(data.u))
     hist, bins = np.histogram(data.m, bins="auto", density=True)
     hist = cumulative(hist)
 
@@ -307,8 +327,12 @@ def make_inequality_values_analysis(
     result = lhs < rhs if op == "<" else lhs > rhs
 
     return ValueInequalityOutput(
-        lhs=ValueOutput(value=lhs.m, unit=str(lhs.u), name=lhs_name),
-        rhs=ValueOutput(value=rhs.m, unit=str(rhs.u), name=rhs_name),
+        lhs=ValueOutput(
+            value=lhs.m, unit=pluralize_unit(lhs.u, value=lhs.m), name=lhs_name
+        ),
+        rhs=ValueOutput(
+            value=rhs.m, unit=pluralize_unit(rhs.u, value=rhs.m), name=rhs_name
+        ),
         op=op,
         result=result,
     )
@@ -361,10 +385,21 @@ def make_measure_analyses(value: Quantity[np.ndarray], value_name: str) -> List[
 
     return [
         MeasureOutput(
-            kind="minimum", value=minimum.m, name=value_name, unit=str(mean.u)
+            kind="minimum",
+            value=minimum.m,
+            name=value_name,
+            unit=pluralize_unit(mean.u, value=minimum.m),
         ),
-        MeasureOutput(kind="mean", value=mean.m, name=value_name, unit=str(mean.u)),
         MeasureOutput(
-            kind="maximum", value=maximum.m, name=value_name, unit=str(mean.u)
+            kind="mean",
+            value=mean.m,
+            name=value_name,
+            unit=pluralize_unit(mean.u, value=mean.m),
+        ),
+        MeasureOutput(
+            kind="maximum",
+            value=maximum.m,
+            name=value_name,
+            unit=pluralize_unit(mean.u, value=maximum.m),
         ),
     ]

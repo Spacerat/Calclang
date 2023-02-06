@@ -17,6 +17,9 @@ class Quantity(np.ndarray, Generic[TNumeric]):
     m: TNumeric
     u: Unit
 
+    def to(self, other: Unit) -> Quantity[TNumeric]:
+        ...
+
     def __mul__(self, other: Unit) -> Quantity[TNumeric]:
         ...
 

@@ -17,21 +17,30 @@ class ExprParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by ExprParser#terminate.
-    def enterTerminate(self, ctx:ExprParser.TerminateContext):
-        pass
-
-    # Exit a parse tree produced by ExprParser#terminate.
-    def exitTerminate(self, ctx:ExprParser.TerminateContext):
-        pass
-
-
     # Enter a parse tree produced by ExprParser#id.
     def enterId(self, ctx:ExprParser.IdContext):
         pass
 
     # Exit a parse tree produced by ExprParser#id.
     def exitId(self, ctx:ExprParser.IdContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#word.
+    def enterWord(self, ctx:ExprParser.WordContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#word.
+    def exitWord(self, ctx:ExprParser.WordContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#wordList.
+    def enterWordList(self, ctx:ExprParser.WordListContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#wordList.
+    def exitWordList(self, ctx:ExprParser.WordListContext):
         pass
 
 
@@ -140,6 +149,15 @@ class ExprParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by ExprParser#value.
     def exitValue(self, ctx:ExprParser.ValueContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#unitConvert.
+    def enterUnitConvert(self, ctx:ExprParser.UnitConvertContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#unitConvert.
+    def exitUnitConvert(self, ctx:ExprParser.UnitConvertContext):
         pass
 
 

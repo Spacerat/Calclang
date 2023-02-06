@@ -10,6 +10,7 @@ from typing import (
     Tuple,
     Optional,
 )
+from pprint import pprint
 import numpy as np
 import networkx as nx
 from .units import units
@@ -23,7 +24,7 @@ SIM_SIZE = 300_000
 """ Dictionary which treats all keys as lower clase"""
 
 
-@dataclass
+@dataclass(frozen=True)
 class ExecContext:
     values: CaseInsensitiveDict[str, Optional[Quantity]] = field(
         default_factory=CaseInsensitiveDict
@@ -86,7 +87,7 @@ class ExecContext:
     def has_assigned(self) -> bool:
         return any(v is None for v in self.values.values())
 
-    def get_value(self, name: str):
+    def get_value(self, name: str) -> None | Quantity:
         try:
             return self.values[name]
         except KeyError:
@@ -109,7 +110,7 @@ class ExecContext:
         return next(nx.topological_sort(subgraph))
 
 
-@dataclass
+@dataclass(frozen=True)
 class StatementResult:
     text: str
     value: Optional[Quantity]
@@ -118,7 +119,7 @@ class StatementResult:
         return self.text
 
 
-@dataclass
+@dataclass(frozen=True)
 class AssignmentResult:
     text: str
     target: str
@@ -131,7 +132,7 @@ class AssignmentResult:
 Operator = Literal[">"] | Literal["<"]
 
 
-@dataclass
+@dataclass(frozen=True)
 class InequalityResult:
     text: str
     lhs: Optional[Quantity]
@@ -150,7 +151,7 @@ class InequalityResult:
         return self.names()[1].strip()
 
 
-@dataclass
+@dataclass(frozen=True)
 class VersusResult:
     text: str
     lhs: Optional[Quantity]
@@ -163,7 +164,7 @@ class VersusResult:
 AnyResult = StatementResult | AssignmentResult | InequalityResult | VersusResult
 
 
-@dataclass
+@dataclass(frozen=True)
 class ProgramResults:
     statementResults: List[AnyResult]
     context: "ExecContext"
@@ -173,35 +174,35 @@ class ProgramResults:
         return self.statementResults[-1] if self.statementResults else None
 
 
-@dataclass
+@dataclass(frozen=True)
 class Unknown:
     text: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class Id:
     name: str
 
     def get_deps(self, ctx: ExecContext) -> List[str]:
         return [self.name]
 
-    def execute(self, ctx: "ExecContext"):
+    def execute(self, ctx: "ExecContext") -> None | Quantity:
         return ctx.get_value(self.name)
 
 
-@dataclass
+@dataclass(frozen=True)
 class SequenceIndexId:
     name: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class SequenceIndexRelative:
     name: str
     op: Literal["-", "+"]
     offset: int
 
 
-@dataclass
+@dataclass(frozen=True)
 class SequenceIndexAbsolute:
     index: int
 
@@ -209,13 +210,13 @@ class SequenceIndexAbsolute:
 SequenceIndex = SequenceIndexId | SequenceIndexRelative | SequenceIndexRelative
 
 
-@dataclass
+@dataclass(frozen=True)
 class SequenceId:
     name: str
     indexes: List[SequenceIndex]
 
 
-@dataclass
+@dataclass(frozen=True)
 class Assignment:
     text: str
     target: Id
@@ -230,7 +231,7 @@ class Assignment:
         )
 
 
-@dataclass
+@dataclass(frozen=True)
 class Inequality:
     text: str
     lhs: "Expression"
@@ -249,7 +250,7 @@ class Inequality:
         )
 
 
-@dataclass
+@dataclass(frozen=True)
 class Versus:
     text: str
     lhs: "Expression"
@@ -262,7 +263,7 @@ class Versus:
         return VersusResult(self.text, self.lhs.execute(ctx), self.rhs.execute(ctx))
 
 
-@dataclass
+@dataclass(frozen=True)
 class Statement:
     text: str
     expression: "Expression"
@@ -274,7 +275,7 @@ class Statement:
         return StatementResult(self.text, self.expression.execute(ctx))
 
 
-@dataclass
+@dataclass(frozen=True)
 class Value:
     literal: int | float
     unit: str
@@ -282,7 +283,7 @@ class Value:
     def get_deps(self, ctx: ExecContext) -> List[str]:
         return []
 
-    def execute(self, ctx: "ExecContext"):
+    def execute(self, ctx: "ExecContext") -> None | Quantity:
         # return self.literal
         if self.unit:
             return self.literal * units[self.unit]
@@ -290,7 +291,7 @@ class Value:
             return self.literal * units.dimensionless
 
 
-@dataclass
+@dataclass(frozen=True)
 class BinOp:
     lhs: "Expression"
     op: str
@@ -307,7 +308,7 @@ class BinOp:
         if self.op in ("*", "/"):
             return 1 * units.dimensionless
 
-    def execute(self, ctx: "ExecContext"):
+    def execute(self, ctx: "ExecContext") -> None | Quantity:
         lhs = self.default_val(self.lhs.execute(ctx))
         rhs = self.default_val(self.rhs.execute(ctx))
 
@@ -326,7 +327,21 @@ class BinOp:
         raise RuntimeError(f"unknown operator {self.op}")
 
 
-@dataclass
+@dataclass(frozen=True)
+class UnitConvert:
+    expression: "Expression"
+    unit: str
+
+    def get_deps(self, ctx: ExecContext) -> List[str]:
+        return self.expression.get_deps(ctx)
+
+    def execute(self, ctx: "ExecContext") -> None | Quantity:
+        val = self.expression.execute(ctx)
+        if val:
+            return val.to(units[self.unit])
+
+
+@dataclass(frozen=True)
 class Range:
     bottom: "Expression"
     top: "Expression"
@@ -339,10 +354,10 @@ class Range:
             + (self.mid.get_deps(ctx) if self.mid else [])
         )
 
-    def execute(self, ctx: "ExecContext") -> np.ndarray:
+    def execute(self, ctx: "ExecContext") -> None | Quantity[np.ndarray]:
         return self.triangular(ctx) if self.mid else self.uniform(ctx)
 
-    def triangular(self, ctx: "ExecContext") -> np.ndarray:
+    def triangular(self, ctx: "ExecContext") -> None | Quantity[np.ndarray]:
         bottom = self.bottom.execute(ctx)
         top = self.top.execute(ctx)
         mid = self.mid.execute(ctx)
@@ -360,7 +375,7 @@ class Range:
             * bottom.u
         )
 
-    def uniform(self, ctx: "ExecContext") -> np.ndarray:
+    def uniform(self, ctx: "ExecContext") -> None | Quantity[np.ndarray]:
         bottom = self.bottom.execute(ctx)
         top = self.top.execute(ctx)
 
@@ -395,7 +410,7 @@ def infer_units(lhs: Quantity, rhs: Quantity) -> Tuple[Quantity, Quantity]:
     return (lhs, rhs)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Program:
     statements: List[Union[Assignment, Statement]]
 

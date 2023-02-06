@@ -14,13 +14,18 @@ class ExprParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#terminate.
-    def visitTerminate(self, ctx:ExprParser.TerminateContext):
+    # Visit a parse tree produced by ExprParser#id.
+    def visitId(self, ctx:ExprParser.IdContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#id.
-    def visitId(self, ctx:ExprParser.IdContext):
+    # Visit a parse tree produced by ExprParser#word.
+    def visitWord(self, ctx:ExprParser.WordContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#wordList.
+    def visitWordList(self, ctx:ExprParser.WordListContext):
         return self.visitChildren(ctx)
 
 
@@ -81,6 +86,11 @@ class ExprParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by ExprParser#value.
     def visitValue(self, ctx:ExprParser.ValueContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#unitConvert.
+    def visitUnitConvert(self, ctx:ExprParser.UnitConvertContext):
         return self.visitChildren(ctx)
 
 
