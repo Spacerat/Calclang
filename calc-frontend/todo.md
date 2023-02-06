@@ -17,6 +17,10 @@
 - [ ]: percentile table
   - 1 5 10 20 50 80 90 95 99
 
-Social
+## Ideas
+
+- codemirror-interact
+
+## Social
 
 - [ ] User interview
