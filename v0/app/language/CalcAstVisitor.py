@@ -34,6 +34,8 @@ supported_units = {
     "grams",
     "gram",
     "grams",
+    "kilogram",
+    "kilograms",
     "oz",
     "ounce",
     "ounces",
