@@ -51,6 +51,8 @@ supported_units = {
     "hours",
     "day",
     "days",
+    "week",
+    "weeks",
     "year",
     "years",
     # Money
