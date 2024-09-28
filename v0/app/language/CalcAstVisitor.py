@@ -134,6 +134,11 @@ class CalcAstVisitor(ExprParserVisitor):
         )
 
     def visitWordList(self, ctx: ExprParser.WordListContext):
+        children = self.visitChildren(ctx)
+
+        # FIXME: Why are children sometimes a str and sometimes an array? It should *probably* always be an array
+        if isinstance(children, str):
+            return children
         return " ".join(self.visitChildren(ctx))
 
     def visitUnit(self, ctx: ExprParser.UnitContext):
