@@ -1,17 +1,19 @@
 profit = income - cost
 
-income = 'widgets sold' * 'price of widget'
+income = widgets sold * price of widget
 
-'widgets sold' = 10000 to 20000
+widgets sold = 10000 to 20000
 
-'price of widget' = 2 to 5
+price of widget = 2 to 5
 
-cost = rental + 'employee count' * wages
+cost = rental + employee count * wages
 
 rental = 10000 to 40000
 
+# shooot
+
 wages = 10000 to 15000
 
-'employee count' = 3 to 5
+employee count = 3 to 5
 
 profit

@@ -98,6 +98,15 @@ class ExprParserListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by ExprParser#comment.
+    def enterComment(self, ctx:ExprParser.CommentContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#comment.
+    def exitComment(self, ctx:ExprParser.CommentContext):
+        pass
+
+
     # Enter a parse tree produced by ExprParser#unit.
     def enterUnit(self, ctx:ExprParser.UnitContext):
         pass

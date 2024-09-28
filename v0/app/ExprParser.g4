@@ -17,7 +17,10 @@ stat:
 	| expression = expr										# statement
 	| lhs = expr op = (GREATER_THAN | LESS_THAN) rhs = expr	# inequality
 	// versus could also use expr in theory but starting with just basicId for easier chart titles
-	| lhs = basicId VERSUS rhs = basicId # versus;
+	| lhs = basicId VERSUS rhs = basicId # versus
+	// TODO: can we do comments normally?
+	| SINGLE_COMMENT # comment
+	| MULTILINE_COMMENT # comment;
 
 unit: WORD;
 

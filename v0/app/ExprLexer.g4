@@ -1,8 +1,5 @@
 lexer grammar ExprLexer;
 
-SINGLE_COMMENT: '//' ~('\r' | '\n')* -> skip;
-MULTILINE_COMMENT: '/*' .*? '*/' -> skip;
-
 IN: 'in';
 AND: 'and';
 THEN: 'then' | '->';
@@ -43,4 +40,9 @@ DOTS: '..';
 
 NL: [\r\n]+;
 // SPACE: ' '+;
-WS_SKIP: [ \t\r\n\f]+ -> skip;
+WS_SKIP: [ \t\r\n\f]+ -> channel(HIDDEN);
+
+// TODO: can we do comments normally?
+
+SINGLE_COMMENT: '#' (~('\r' | '\n'))*; // -> channel(HIDDEN);
+MULTILINE_COMMENT: '/*' .*? '*/'; // -> channel(HIDDEN);

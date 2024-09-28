@@ -59,6 +59,11 @@ class ExprParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by ExprParser#comment.
+    def visitComment(self, ctx:ExprParser.CommentContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by ExprParser#unit.
     def visitUnit(self, ctx:ExprParser.UnitContext):
         return self.visitChildren(ctx)
