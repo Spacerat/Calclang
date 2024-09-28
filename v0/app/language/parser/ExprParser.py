@@ -1,4 +1,4 @@
-# Generated from ExprParser.g4 by ANTLR 4.11.1
+# Generated from ExprParser.g4 by ANTLR 4.13.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -129,7 +129,7 @@ class ExprParser ( Parser ):
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
-        self.checkVersion("4.11.1")
+        self.checkVersion("4.13.2")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
@@ -210,12 +210,12 @@ class ExprParser ( Parser ):
             self.state = 31
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while ((_la) & ~0x3f) == 0 and ((1 << _la) & 1065355264) != 0:
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & 1065355264) != 0):
                 self.state = 26
                 localctx.statements = self.stat()
                 self.state = 27
                 _la = self._input.LA(1)
-                if not((((_la - -1)) & ~0x3f) == 0 and ((1 << (_la - -1)) & 4294969345) != 0):
+                if not(((((_la - -1)) & ~0x3f) == 0 and ((1 << (_la - -1)) & 4294969345) != 0)):
                     self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
