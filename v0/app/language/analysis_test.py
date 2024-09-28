@@ -6,7 +6,8 @@ from .analysis import (
     Analysis,
     ValueOutput,
     MeasureOutput,
-    DistributionOutput,
+    PercentilesOutput,
+    DistributionOutput
 )
 from .units import units
 from pprint import pprint
@@ -14,7 +15,9 @@ from pprint import pprint
 
 def test_analyse_result_statement():
     result = StatementResult("x", 1 * units.dimensionless)
-    assert analyse_result(result) == Analysis("x", "dimensionless", [ValueOutput(1)])
+    expected_output = ValueOutput(1, "dimensionless", "x", "value")
+    expected = Analysis(name="x", outputs=[expected_output])
+    assert analyse_result(result) == expected
 
 
 def test_analyse_result_distribution():
@@ -24,8 +27,11 @@ def test_analyse_result_distribution():
 
     assert analysis is not None
     assert analysis.name == "x"
-    assert analysis.unit == "dimensionless"
-    assert len(analysis.outputs) == 3
-    assert analysis.outputs[0] == MeasureOutput("mean", 2)
-    assert analysis.outputs[1] == MeasureOutput("median", 2)
-    assert isinstance(analysis.outputs[2], DistributionOutput)
+    # assert analysis.unit == "dimensionless"
+    assert len(analysis.outputs) == 5
+    assert analysis.outputs[0] == MeasureOutput("minimum", 1, "dimensionless", "x", "measure")
+    assert analysis.outputs[1] == MeasureOutput("mean", 2, "dimensionless", "x", "measure")
+    assert analysis.outputs[2] == MeasureOutput("maximum", 3, "dimensionless", "x", "measure")
+    assert isinstance(analysis.outputs[3], PercentilesOutput)
+    assert isinstance(analysis.outputs[4], DistributionOutput)
+
