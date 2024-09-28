@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from language import parse_string, analyse_result, Analysis
+from lib.language import parse_string, analyse_result, Analysis
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 from typing import TypedDict

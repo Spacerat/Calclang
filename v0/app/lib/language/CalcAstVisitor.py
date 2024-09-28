@@ -1,7 +1,7 @@
 # type: ignore
 
-from .parser.ExprParser import ExprParser
-from .parser.ExprParserVisitor import ExprParserVisitor
+from ..parser.ExprParser import ExprParser
+from ..parser.ExprParserVisitor import ExprParserVisitor
 
 
 from .calc_ast import (

@@ -1,6 +1,6 @@
 from antlr4 import CommonTokenStream, InputStream, FileStream
-from .parser.ExprLexer import ExprLexer
-from .parser.ExprParser import ExprParser
+from ..parser.ExprLexer import ExprLexer
+from ..parser.ExprParser import ExprParser
 from .CalcAstVisitor import CalcAstVisitor
 from .calc_ast import Program
 
