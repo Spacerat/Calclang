@@ -5,3 +5,4 @@ __pycache__
 .vscode
 *.java
 *.venv
+*.DS_Store
