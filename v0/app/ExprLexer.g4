@@ -29,7 +29,7 @@ SLASH_DATE:
 		[0-9][0-9]
 	)?;
 
-INT: (MINUS? [1-9][0-9]* | '0');
+INT: (MINUS? [1-9]([0-9] | ',')* | '0');
 FLOAT: INT [.] INT;
 
 WORD: [a-zA-Z_][a-zA-Z_0-9]*;

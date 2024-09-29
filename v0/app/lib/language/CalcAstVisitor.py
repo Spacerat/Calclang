@@ -116,7 +116,7 @@ class CalcAstVisitor(ExprParserVisitor):
         return Value(self.visit(ctx.value), unit=unit)
 
     def visitNumericLiteral(self, ctx: ExprParser.NumericLiteralContext):
-        return float(ctx.getText())
+        return float(ctx.getText().replace(',', ''))
 
     def visitBinop(self, ctx: ExprParser.BinopContext):
         return BinOp(self.visit(ctx.lhs), ctx.op.text, self.visit(ctx.rhs))

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from lib.language import parse_string, analyse_result, Analysis
+from .lib.language import parse_string, analyse_result, Analysis
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 from typing import TypedDict
@@ -36,10 +36,8 @@ class Result(TypedDict):
 
 @app.get("/compute", response_model=Result)
 def read_item(code: str) -> Result | None:
-    last_result = parse_string(code).execute().last_result
-    if last_result:
-        analysis = analyse_result(last_result)
-        if analysis:
+    if last_result := parse_string(code).execute().last_result:
+        if analysis := analyse_result(last_result):
             return Result(analysis=analysis)
 
     return None
